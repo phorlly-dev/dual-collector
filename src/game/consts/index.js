@@ -1,4 +1,4 @@
-const GAME_WIDTH = 850;
+const GAME_WIDTH = 800;
 const GAME_HEIGHT = 600;
 const GAME_MENU = "game-menu";
 const GAME_OVER = "game-over";
@@ -28,8 +28,9 @@ const LOAD_ASSETS = {
         UP: "up",
         PLAY: "play",
         PAUSE: "pause",
+        BOMB: "bomb",
     },
-    PATH: {
+    VALUE: {
         //images
         BACKGROUND: "assets/images/bg.png",
         LOGO: "assets/images/logo.png",
@@ -39,6 +40,7 @@ const LOAD_ASSETS = {
         UP: "assets/images/up.png",
         PLAY: "assets/images/play.png",
         PAUSE: "assets/images/pause.png",
+        BOMB: "assets/images/bomb.png",
 
         ///audios
         HP: "assets/audios/hp.mp3",
@@ -49,20 +51,19 @@ const LOAD_ASSETS = {
         ON: "assets/audios/on.ogg",
         ON: "assets/audios/on.ogg",
         WALK: "assets/audios/walk.ogg",
-
     },
 };
 
 const toggleControls = ({ isVisible, isMobile = false }) => {
     getById("controls-desktop").style.display = isVisible ? "block" : "none";
     getById("controls-mobile").style.display = isMobile ? "block" : "none";
-}
+};
 
-const toggleUI = (isVisible) => getById("ui").style.display = isVisible ? "block" : "none";
+const toggleUI = (isVisible) => (getById("ui").style.display = isVisible ? "block" : "none");
 
-const setPower = (power) => getById("power").textContent = power;
+const setPower = (power) => (getById("power").textContent = power);
 
-const setScore = (score) => getById("score").textContent = score;
+const setScore = (score) => (getById("score").textContent = score);
 
 const powersOf2 = (val) => Math.pow(2, val);
 
@@ -70,28 +71,28 @@ const exponentFromValue = (val) => {
     const exp = Math.log2(val);
 
     return Number.isInteger(exp) ? exp : val;
-}
+};
 
 const getById = (id) => document.getElementById(id);
 
 export {
-  exponentFromValue,
-  GAME_BOOT,
-  GAME_HEIGHT,
-  GAME_MENU,
-  GAME_OVER,
-  GAME_PRELOAD,
-  GAME_START,
-  GAME_WIDTH,
-  getById,
-  LOAD_ASSETS,
-  powersOf2,
-  PRESS_RESTART,
-  PRESS_START,
-  setPower,
-  setScore,
-  TAP_RESTART,
-  TAP_START,
-  toggleControls,
-  toggleUI,
+    exponentFromValue,
+    GAME_BOOT,
+    GAME_HEIGHT,
+    GAME_MENU,
+    GAME_OVER,
+    GAME_PRELOAD,
+    GAME_START,
+    GAME_WIDTH,
+    getById,
+    LOAD_ASSETS,
+    powersOf2,
+    PRESS_RESTART,
+    PRESS_START,
+    setPower,
+    setScore,
+    TAP_RESTART,
+    TAP_START,
+    toggleControls,
+    toggleUI,
 };

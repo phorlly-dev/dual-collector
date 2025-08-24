@@ -1,8 +1,4 @@
-import {
-  GAME_BOOT,
-  GAME_PRELOAD,
-  LOAD_ASSETS,
-} from '../consts';
+import { GAME_BOOT, GAME_PRELOAD, LOAD_ASSETS } from "../consts";
 
 class Boot extends Phaser.Scene {
     constructor() {
@@ -10,7 +6,7 @@ class Boot extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image(LOAD_ASSETS.KEY.BACKGROUND, LOAD_ASSETS.PATH.BACKGROUND);
+        this.load.image(LOAD_ASSETS.KEY.BACKGROUND, LOAD_ASSETS.VALUE.BACKGROUND);
     }
 
     create() {
@@ -19,5 +15,3 @@ class Boot extends Phaser.Scene {
 }
 
 export default Boot;
-
-

@@ -1,5 +1,5 @@
-import { toggleControls } from './game/consts';
-import StartGame from './game/scenes/Start';
+import { toggleControls } from "./game/consts";
+import StartGame from "./game/scenes/Start";
 
 const applyDevice = () => toggleControls({ isVisible: !isMobile(), isMobile: isMobile() });
 
@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", applyDevice);
 });
 
-const isMobile = () => /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
+const isMobile = () =>
+    /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
 
 export { applyDevice, isMobile };

@@ -1,14 +1,5 @@
-import {
-  GAME_HEIGHT,
-  GAME_MENU,
-  GAME_PRELOAD,
-  GAME_WIDTH,
-  LOAD_ASSETS,
-} from '../consts';
-import {
-  orange_color,
-  secondary_color,
-} from '../consts/colors';
+import { GAME_HEIGHT, GAME_MENU, GAME_PRELOAD, GAME_WIDTH, LOAD_ASSETS } from "../consts";
+import { orange_color, secondary_color } from "../consts/colors";
 
 class Preloader extends Phaser.Scene {
     constructor() {
@@ -28,10 +19,12 @@ class Preloader extends Phaser.Scene {
         const progressBar = this.add.graphics();
 
         // text
-        const progressText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, "Loading: 0%", {
-            fontSize: "20px",
-            fill: secondary_color,
-        }).setOrigin(0.5);
+        const progressText = this.add
+            .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, "Loading: 0%", {
+                fontSize: "20px",
+                fill: secondary_color,
+            })
+            .setOrigin(0.5);
 
         this.fakeProgress = 0;
         this.speed = 1500;
@@ -55,27 +48,31 @@ class Preloader extends Phaser.Scene {
                         8
                     );
                     progressText.setText(`Loading: ${Math.round(this.fakeProgress * 100)}%`);
-                }
+                },
             });
         });
 
         // load assets here
-        this.load.image(LOAD_ASSETS.KEY.LOGO, LOAD_ASSETS.PATH.LOGO);
-        this.load.image(LOAD_ASSETS.KEY.LEFT, LOAD_ASSETS.PATH.LEFT);
-        this.load.image(LOAD_ASSETS.KEY.RIGHT, LOAD_ASSETS.PATH.RIGHT);
-        this.load.image(LOAD_ASSETS.KEY.UP, LOAD_ASSETS.PATH.UP);
-        this.load.image(LOAD_ASSETS.KEY.PLAY, LOAD_ASSETS.PATH.PLAY);
-        this.load.image(LOAD_ASSETS.KEY.PAUSE, LOAD_ASSETS.PATH.PAUSE);
+        this.load.image(LOAD_ASSETS.KEY.LOGO, LOAD_ASSETS.VALUE.LOGO);
+        this.load.image(LOAD_ASSETS.KEY.LEFT, LOAD_ASSETS.VALUE.LEFT);
+        this.load.image(LOAD_ASSETS.KEY.RIGHT, LOAD_ASSETS.VALUE.RIGHT);
+        this.load.image(LOAD_ASSETS.KEY.UP, LOAD_ASSETS.VALUE.UP);
+        this.load.image(LOAD_ASSETS.KEY.PLAY, LOAD_ASSETS.VALUE.PLAY);
+        this.load.image(LOAD_ASSETS.KEY.PAUSE, LOAD_ASSETS.VALUE.PAUSE);
+        this.load.image(LOAD_ASSETS.KEY.BOMB, LOAD_ASSETS.VALUE.BOMB);
 
-        this.load.audio(LOAD_ASSETS.KEY.HP, LOAD_ASSETS.PATH.HP);
-        this.load.audio(LOAD_ASSETS.KEY.LD, LOAD_ASSETS.PATH.LD);
-        this.load.audio(LOAD_ASSETS.KEY.HL, LOAD_ASSETS.PATH.HL);
-        this.load.audio(LOAD_ASSETS.KEY.END, LOAD_ASSETS.PATH.END);
-        this.load.audio(LOAD_ASSETS.KEY.CL, LOAD_ASSETS.PATH.CL);
-        this.load.audio(LOAD_ASSETS.KEY.ON, LOAD_ASSETS.PATH.ON);
-        this.load.audio(LOAD_ASSETS.KEY.WALK, LOAD_ASSETS.PATH.WALK);
+        this.load.audio(LOAD_ASSETS.KEY.HP, LOAD_ASSETS.VALUE.HP);
+        this.load.audio(LOAD_ASSETS.KEY.LD, LOAD_ASSETS.VALUE.LD);
+        this.load.audio(LOAD_ASSETS.KEY.HL, LOAD_ASSETS.VALUE.HL);
+        this.load.audio(LOAD_ASSETS.KEY.END, LOAD_ASSETS.VALUE.END);
+        this.load.audio(LOAD_ASSETS.KEY.CL, LOAD_ASSETS.VALUE.CL);
+        this.load.audio(LOAD_ASSETS.KEY.ON, LOAD_ASSETS.VALUE.ON);
+        this.load.audio(LOAD_ASSETS.KEY.WALK, LOAD_ASSETS.VALUE.WALK);
 
-        this.load.spritesheet(LOAD_ASSETS.KEY.PLAYER, LOAD_ASSETS.PATH.PLAYER, { frameWidth: 32, frameHeight: 48 });
+        this.load.spritesheet(LOAD_ASSETS.KEY.PLAYER, LOAD_ASSETS.VALUE.PLAYER, {
+            frameWidth: 32,
+            frameHeight: 48,
+        });
     }
 
     create() {
@@ -83,7 +80,6 @@ class Preloader extends Phaser.Scene {
             this.scene.start(GAME_MENU);
         });
     }
-
 }
 
 export default Preloader;

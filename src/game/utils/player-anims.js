@@ -1,4 +1,4 @@
-import { LOAD_ASSETS } from '../consts';
+import { LOAD_ASSETS } from "../consts";
 
 const createPlayerAnimations = (scene) => {
     scene.anims.create({
@@ -20,6 +20,6 @@ const createPlayerAnimations = (scene) => {
         frameRate: 16,
         repeat: -1,
     });
-}
+};
 
 export default createPlayerAnimations;

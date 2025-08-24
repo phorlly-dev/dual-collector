@@ -1,19 +1,15 @@
-import { isMobile } from '../../main';
+import { isMobile } from "../../main";
 import {
-  GAME_OVER,
-  GAME_START,
-  LOAD_ASSETS,
-  PRESS_RESTART,
-  TAP_RESTART,
-  toggleControls,
-  toggleUI,
-} from '../consts';
-import {
-  error_color,
-  primary_color,
-  secondary_color,
-} from '../consts/colors';
-import { setText } from '../utils';
+    GAME_OVER,
+    GAME_START,
+    LOAD_ASSETS,
+    PRESS_RESTART,
+    TAP_RESTART,
+    toggleControls,
+    toggleUI,
+} from "../consts";
+import { error_color, primary_color, secondary_color } from "../consts/colors";
+import { setText } from "../utils";
 
 class GameOver extends Phaser.Scene {
     constructor() {

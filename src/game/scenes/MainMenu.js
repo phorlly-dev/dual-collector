@@ -1,18 +1,15 @@
+import { applyDevice, isMobile } from "../../main";
 import {
-  applyDevice,
-  isMobile,
-} from '../../main';
-import {
-  GAME_HEIGHT,
-  GAME_MENU,
-  GAME_START,
-  GAME_WIDTH,
-  LOAD_ASSETS,
-  PRESS_START,
-  TAP_START,
-  toggleUI,
-} from '../consts';
-import { setText } from '../utils';
+    GAME_HEIGHT,
+    GAME_MENU,
+    GAME_START,
+    GAME_WIDTH,
+    LOAD_ASSETS,
+    PRESS_START,
+    TAP_START,
+    toggleUI,
+} from "../consts";
+import { setText } from "../utils";
 
 class MainMenu extends Phaser.Scene {
     constructor() {
