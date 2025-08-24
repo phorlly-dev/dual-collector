@@ -1,3 +1,4 @@
+import { applyDevice } from "../../main";
 import {
     exponentFromValue,
     GAME_HEIGHT,
@@ -33,6 +34,7 @@ class Game extends Phaser.Scene {
         this.isJump = false;
 
         //show UI power and score
+        applyDevice();
         toggleUI(true);
     }
 
@@ -101,7 +103,7 @@ class Game extends Phaser.Scene {
         // --- Game over check ---
         if (this.power <= 0) {
             this.sound.play(LOAD_ASSETS.KEY.END);
-            this.time.delayedCall(1000, () => {
+            this.time.delayedCall(800, () => {
                 this.scene.start(GAME_OVER, {
                     score: this.score,
                     ui: false,
@@ -116,13 +118,14 @@ class Game extends Phaser.Scene {
     // ... keep update, collectPowerBox, collectScoreBox (but now they call imported effects)
     collectPowerBox(player, powerBox) {
         if (powerBox.operation === "x") {
-            this.power += exponentFromValue(powerBox.value) * 10;
             this.sound.play(LOAD_ASSETS.KEY.HP);
+            this.power += exponentFromValue(powerBox.value) * 10;
         } else if (powerBox.operation === "/") {
-            this.power = Math.floor(this.power / powerBox.value);
             this.sound.play(LOAD_ASSETS.KEY.HL);
+            this.power = Math.floor(this.power / powerBox.value);
         }
 
+        this.sound.play(LOAD_ASSETS.KEY.LD);
         createPowerEffect(
             this,
             powerBox.x,
@@ -131,7 +134,6 @@ class Game extends Phaser.Scene {
             powerBox.value,
             this.power
         );
-        this.sound.play(LOAD_ASSETS.KEY.LD);
         setPower(this.power);
 
         if (powerBox.textObj) powerBox.textObj.destroy();
@@ -140,13 +142,14 @@ class Game extends Phaser.Scene {
 
     collectScoreBox(player, scoreBox) {
         if (scoreBox.operation === "+") {
-            this.score += scoreBox.value;
             this.sound.play(LOAD_ASSETS.KEY.HP);
+            this.score += scoreBox.value;
         } else if (scoreBox.operation === "-") {
-            this.score = Math.max(0, this.score - scoreBox.value);
             this.sound.play(LOAD_ASSETS.KEY.HL);
+            this.score = Math.max(0, this.score - scoreBox.value);
         }
 
+        this.sound.play(LOAD_ASSETS.KEY.LD);
         createScoreEffect(
             this,
             scoreBox.x,
@@ -155,7 +158,6 @@ class Game extends Phaser.Scene {
             scoreBox.value,
             this.score
         );
-        this.sound.play(LOAD_ASSETS.KEY.LD);
         setScore(this.score);
 
         if (scoreBox.textObj) scoreBox.textObj.destroy();
@@ -167,6 +169,7 @@ class Game extends Phaser.Scene {
         this.power = 0;
         setPower(this.power);
 
+        this.sound.play(LOAD_ASSETS.KEY.BX);
         createBombEffect(this, bomb);
     }
 

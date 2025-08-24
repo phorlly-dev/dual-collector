@@ -68,6 +68,7 @@ class Preloader extends Phaser.Scene {
         this.load.audio(LOAD_ASSETS.KEY.CL, LOAD_ASSETS.VALUE.CL);
         this.load.audio(LOAD_ASSETS.KEY.ON, LOAD_ASSETS.VALUE.ON);
         this.load.audio(LOAD_ASSETS.KEY.WALK, LOAD_ASSETS.VALUE.WALK);
+        this.load.audio(LOAD_ASSETS.KEY.BX, LOAD_ASSETS.VALUE.BX);
 
         this.load.spritesheet(LOAD_ASSETS.KEY.PLAYER, LOAD_ASSETS.VALUE.PLAYER, {
             frameWidth: 32,

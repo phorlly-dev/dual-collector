@@ -29,6 +29,7 @@ const LOAD_ASSETS = {
         PLAY: "play",
         PAUSE: "pause",
         BOMB: "bomb",
+        BX: "bx",
     },
     VALUE: {
         //images
@@ -51,6 +52,7 @@ const LOAD_ASSETS = {
         ON: "assets/audios/on.ogg",
         ON: "assets/audios/on.ogg",
         WALK: "assets/audios/walk.ogg",
+        BX: "assets/audios/bx.wav",
     },
 };
 
