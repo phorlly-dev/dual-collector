@@ -1,12 +1,19 @@
-import { powersOf2 } from '../consts';
 import {
+  GAME_WIDTH,
+  powersOf2,
+} from '../consts';
+import {
+  black_color,
   orange_color,
   purple_color,
-  white_color,
 } from '../consts/colors';
 
 const spawnBoxes = (scene) => {
     if (scene.isPaused) return;
+
+    const setY = -50;
+    const strokeThickness = 4;
+    const fontSize = Math.max(12, GAME_WIDTH / 50);
 
     const x1 = Phaser.Math.Between(80, 350);
     const x2 = Phaser.Math.Between(450, 720);
@@ -20,7 +27,7 @@ const spawnBoxes = (scene) => {
     powerBox.fillStyle(purple_color);
     powerBox.fillRoundedRect(-30, -30, 60, 60, 12);
     powerBox.x = powerX;
-    powerBox.y = -50;
+    powerBox.y = setY;
 
     scene.physics.add.existing(powerBox);
     scene.powerBoxes.add(powerBox);
@@ -30,10 +37,12 @@ const spawnBoxes = (scene) => {
     powerBox.operation = powerOp;
     powerBox.value = powerValue;
 
-    const powerText = scene.add.text(powerX, -50, `${powerOp}${powerValue}`, {
-        fontSize: "16px",
-        fill: white_color,
+    const powerText = scene.add.text(powerX, setY, `${powerOp}${powerValue}`, {
+        fontSize: `${fontSize}px`,
+        fill: "#fff",
         fontWeight: "bold",
+        stroke: black_color,
+        strokeThickness: strokeThickness,
     }).setOrigin(0.5);
 
     powerBox.textObj = powerText;
@@ -44,7 +53,7 @@ const spawnBoxes = (scene) => {
     scoreBox.fillStyle(orange_color);
     scoreBox.fillRoundedRect(-30, -30, 60, 60, 12);
     scoreBox.x = scoreX;
-    scoreBox.y = -50;
+    scoreBox.y = setY;
 
     scene.physics.add.existing(scoreBox);
     scene.scoreBoxes.add(scoreBox);
@@ -54,10 +63,12 @@ const spawnBoxes = (scene) => {
     scoreBox.operation = scoreOp;
     scoreBox.value = scoreValue;
 
-    const scoreText = scene.add.text(scoreX, -50, `${scoreOp}${scoreValue}`, {
-        fontSize: "16px",
-        fill: white_color,
+    const scoreText = scene.add.text(scoreX, setY, `${scoreOp}${scoreValue}`, {
+        fontSize: `${fontSize}px`,
+        fill: "#fff",
         fontWeight: "bold",
+        stroke: black_color,
+        strokeThickness: strokeThickness,
     }).setOrigin(0.5);
     scoreBox.textObj = scoreText;
     scoreBox.body.setVelocityY(120);

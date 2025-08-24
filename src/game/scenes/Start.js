@@ -28,6 +28,10 @@ const config = {
             debug: false,
         },
     },
+    render: {
+        pixelArt: false,   // smooth scaling
+        antialias: true,   // prevent blurry text edges
+    },
     scene: [Boot, Preloader, MainMenu, Game, GameOver],
 };
 

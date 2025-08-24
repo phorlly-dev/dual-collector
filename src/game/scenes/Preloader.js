@@ -17,7 +17,7 @@ class Preloader extends Phaser.Scene {
 
     preload() {
         // background
-        this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, LOAD_ASSETS.KEY.BACKGROUND);
+        this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, LOAD_ASSETS.KEY.BACKGROUND).alpha = 0.8;
 
         // progress container (outline with rounded corners)
         const progressBox = this.add.graphics();

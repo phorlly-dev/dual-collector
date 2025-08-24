@@ -58,7 +58,8 @@ const boxTextPositions = (scene) => {
     });
 }
 
-const setText = ({ scene, y = 0, text, font = "Arial", size = 24, color = white_color, stroke = black_color, strokeThickness = 12 }) =>
+const fontSize = Math.max(12, GAME_WIDTH / 50);
+const setText = ({ scene, y = 0, text, font = "Arial", size = fontSize, color = white_color, stroke = black_color, strokeThickness = 12 }) =>
     scene.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + (y), text, {
         fontFamily: font,
         fontSize: size,

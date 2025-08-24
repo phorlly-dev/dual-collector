@@ -50,7 +50,7 @@ class Game extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, LOAD_ASSETS.KEY.BACKGROUND);
+        this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, LOAD_ASSETS.KEY.BACKGROUND).alpha = 0.7;
 
         this.player = this.physics.add.sprite(GAME_WIDTH / 2, GAME_HEIGHT, LOAD_ASSETS.KEY.PLAYER).setBounce(0.2).setScale(1.8);
         this.player.body.setCollideWorldBounds(true);

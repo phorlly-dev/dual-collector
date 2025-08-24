@@ -1,4 +1,4 @@
-const white_color = '#ffffff';
+const white_color = '#ffffff'; 
 const black_color = '#000000';
 const orange_color = 0xe67e22;
 const purple_color = 0x9b59b6;
