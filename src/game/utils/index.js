@@ -18,6 +18,9 @@ const togglePause = (scene) => {
         scene.pauseText.setVisible(true);
         scene.pauseInstructions.setVisible(true);
         scene.sound.play(LOAD_ASSETS.KEY.CL);
+
+        scene.pauseBtn.setVisible(false);
+        scene.playBtn.setVisible(true);
     } else {
         // Resume the game
         scene.physics.resume();
@@ -25,40 +28,11 @@ const togglePause = (scene) => {
         scene.pauseText.setVisible(false);
         scene.pauseInstructions.setVisible(false);
         scene.sound.play(LOAD_ASSETS.KEY.ON);
+
+        scene.pauseBtn.setVisible(true);
+        scene.playBtn.setVisible(false);
     }
 }
-
-const actions = (scene) => {
-    if (scene.cursors.left.isDown || scene.as.A.isDown) {
-        scene.player.setVelocityX(-160);
-        scene.player.anims.play("left", true);
-
-        if (!scene.walkSound.isPlaying) {
-            scene.walkSound.play();  // start looping only once
-        }
-    } else if (scene.cursors.right.isDown || scene.as.S.isDown) {
-        scene.player.setVelocityX(160);
-        scene.player.anims.play("right", true);
-
-        if (!scene.walkSound.isPlaying) {
-            scene.walkSound.play();
-        }
-    } else {
-        scene.player.setVelocityX(0);
-        scene.player.anims.play("turn");
-
-        if (scene.walkSound.isPlaying) {
-            scene.walkSound.stop();  // stop when idle
-        }
-    }
-
-    if (scene.cursors.space.isDown) {
-        scene.player.setVelocityY(-330);
-    } else {
-        // gravity fallback
-        scene.player.setVelocityY(GAME_HEIGHT);
-    }
-};
 
 const boxTextPositions = (scene) => {
     scene.powerBoxes.children.entries.forEach((box) => {
@@ -94,4 +68,4 @@ const setText = ({ scene, y = 0, text, font = "Arial", size = 24, color = white_
         align: "center",
     }).setOrigin(0.5);
 
-export { actions, boxTextPositions, setText, togglePause };
+export { boxTextPositions, setText, togglePause };

@@ -5,8 +5,11 @@ const GAME_OVER = "game-over";
 const GAME_BOOT = "game-boot";
 const GAME_START = "game-start";
 const GAME_PRELOAD = "game-preload";
-const PRESS_START = "Click or Press SPACE to Start";
-const PRESS_RESTART = "Click or Press SPACE to Restart";
+
+const TAP_START = "Click to Start Game";
+const TAP_RESTART = "Click to Restart Game";
+const PRESS_START = "Click or Press SPACE to Start Game";
+const PRESS_RESTART = "Click or Press SPACE to Restart Game";
 
 const LOAD_ASSETS = {
     KEY: {
@@ -20,23 +23,40 @@ const LOAD_ASSETS = {
         CL: "cl",
         ON: "on",
         WALK: "walk",
+        LEFT: "left",
+        RIGHT: "right",
+        UP: "up",
+        PLAY: "play",
+        PAUSE: "pause",
     },
     PATH: {
-        BACKGROUND: "assets/bg.png",
-        LOGO: "assets/logo.png",
-        PLAYER: "assets/player.png",
-        HP: "assets/hp.mp3",
-        LD: "assets/ld.mp3",
-        HL: "assets/hl.wav",
-        END: "assets/end.wav",
-        CL: "assets/cl.ogg",
-        ON: "assets/on.ogg",
-        ON: "assets/on.ogg",
-        WALK: "assets/walk.ogg",
+        //images
+        BACKGROUND: "assets/images/bg.png",
+        LOGO: "assets/images/logo.png",
+        PLAYER: "assets/images/player.png",
+        LEFT: "assets/images/left.png",
+        RIGHT: "assets/images/right.png",
+        UP: "assets/images/up.png",
+        PLAY: "assets/images/play.png",
+        PAUSE: "assets/images/pause.png",
+
+        ///audios
+        HP: "assets/audios/hp.mp3",
+        LD: "assets/audios/ld.mp3",
+        HL: "assets/audios/hl.wav",
+        END: "assets/audios/end.wav",
+        CL: "assets/audios/cl.ogg",
+        ON: "assets/audios/on.ogg",
+        ON: "assets/audios/on.ogg",
+        WALK: "assets/audios/walk.ogg",
+
     },
 };
 
-const toggleControls = (isVisible) => getById("controls").style.display = isVisible ? "block" : "none";
+const toggleControls = ({ isVisible, isMobile = false }) => {
+    getById("controls-desktop").style.display = isVisible ? "block" : "none";
+    getById("controls-mobile").style.display = isMobile ? "block" : "none";
+}
 
 const toggleUI = (isVisible) => getById("ui").style.display = isVisible ? "block" : "none";
 
@@ -48,6 +68,7 @@ const powersOf2 = (val) => Math.pow(2, val);
 
 const exponentFromValue = (val) => {
     const exp = Math.log2(val);
+
     return Number.isInteger(exp) ? exp : val;
 }
 
@@ -69,6 +90,8 @@ export {
   PRESS_START,
   setPower,
   setScore,
+  TAP_RESTART,
+  TAP_START,
   toggleControls,
   toggleUI,
 };

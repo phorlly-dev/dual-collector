@@ -21,11 +21,12 @@ const spawnBoxes = (scene) => {
     powerBox.fillRoundedRect(-30, -30, 60, 60, 12);
     powerBox.x = powerX;
     powerBox.y = -50;
+
     scene.physics.add.existing(powerBox);
     scene.powerBoxes.add(powerBox);
 
     const powerOp = Phaser.Math.RND.pick(["x", "/"]);
-    let powerValue = powerOp === "x" ? powersOf2(Phaser.Math.Between(1, 10)) : Phaser.Math.Between(2, 3);
+    let powerValue = powerOp === "x" ? powersOf2(Phaser.Math.Between(1, 11)) : Phaser.Math.Between(2, 4);
     powerBox.operation = powerOp;
     powerBox.value = powerValue;
 
@@ -44,11 +45,12 @@ const spawnBoxes = (scene) => {
     scoreBox.fillRoundedRect(-30, -30, 60, 60, 12);
     scoreBox.x = scoreX;
     scoreBox.y = -50;
+
     scene.physics.add.existing(scoreBox);
     scene.scoreBoxes.add(scoreBox);
 
     const scoreOp = Phaser.Math.RND.pick(["+", "-"]);
-    let scoreValue = scoreOp === "+" ? Phaser.Math.Between(50, 150) : Phaser.Math.Between(20, 80);
+    let scoreValue = scoreOp === "+" ? Phaser.Math.Between(50, 500) : Phaser.Math.Between(25, 250);
     scoreBox.operation = scoreOp;
     scoreBox.value = scoreValue;
 

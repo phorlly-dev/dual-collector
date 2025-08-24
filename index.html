@@ -16,18 +16,24 @@
             <div class="score">💯 Score: <span id="score">0</span></div>
         </div>
         <div id="phaser-game"></div>
-        <div id="controls">
-            <h3>▶ How to Play:</h3>
-            <p>
-                <strong>⇌ Move:</strong> Arrow keys (Left and Right) or AS.
-                <strong>⇑ Pop up:</strong> Press key SPACE
-            </p>
-            <p><strong># Collect separate boxes:</strong></p>
-            <p>◕ <strong>Purple boxes (Power):</strong> x[number] multiply, /[number] divide</p>
-            <p>◧ <strong>Orange boxes (Score):</strong> +[number] add, -[number] subtract</p>
-            <p><strong>Strategy:</strong> You can choose to collect only the boxes you want!</p>
+        <div id="controls-desktop">
+            <h3>▶ How to Play (Desktop):</h3>
+            <p><strong>⇌ Move:</strong> Arrow keys (Left/Right) or A/D</p>
+            <p><strong>⇑ Jump:</strong> Press SPACE</p>
+            <p><strong>Purple boxes:</strong> x[number] multiply, /[number] divide</p>
+            <p><strong>Orange boxes:</strong> +[number] add, -[number] subtract</p>
             <p><strong>Goal:</strong> Keep power above 0 and maximize your score!</p>
         </div>
+
+        <div id="controls-mobile">
+            <h3>▶ How to Play (Mobile):</h3>
+            <p><strong>⇌ Move:</strong> Tap ⬅ ➡ buttons</p>
+            <p><strong>⇑ Jump:</strong> Tap ⬆ button</p>
+            <p><strong>Purple boxes:</strong> x[number] multiply, /[number] divide</p>
+            <p><strong>Orange boxes:</strong> +[number] add, -[number] subtract</p>
+            <p><strong>Goal:</strong> Keep power above 0 and maximize your score!</p>
+        </div>
+
     </div>
     <script type="module" src="./src/main.js"></script>
 </body>

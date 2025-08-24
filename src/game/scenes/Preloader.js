@@ -1,45 +1,89 @@
 import {
+  GAME_HEIGHT,
   GAME_MENU,
   GAME_PRELOAD,
+  GAME_WIDTH,
   LOAD_ASSETS,
 } from '../consts';
+import {
+  orange_color,
+  secondary_color,
+} from '../consts/colors';
 
 class Preloader extends Phaser.Scene {
     constructor() {
         super(GAME_PRELOAD);
     }
 
-    init() {
-        //  We loaded this image in our Boot Scene, so we can display it here
-        this.add.image(512, 384, LOAD_ASSETS.KEY.BACKGROUND);
-
-        //  A simple progress bar. This is the outline of the bar.
-        this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
-
-        //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
-        const bar = this.add.rectangle(512 - 230, 384, 4, 28, 0xffffff);
-
-        //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
-        this.load.on('progress', (progress) => {
-
-            //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
-            bar.width = 4 + (460 * progress);
-
-        });
-    }
-
     preload() {
-        //  Load the assets for the game - Replace with your own assets
+        // background
+        this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, LOAD_ASSETS.KEY.BACKGROUND);
+
+        // progress container (outline with rounded corners)
+        const progressBox = this.add.graphics();
+        progressBox.lineStyle(2, 0xffffff, 1);
+        progressBox.strokeRoundedRect(GAME_WIDTH / 2 - 230, GAME_HEIGHT / 2 - 14, 460, 28, 8);
+
+        // progress bar (filled rounded rect)
+        const progressBar = this.add.graphics();
+
+        // text
+        const progressText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, "Loading: 0%", {
+            fontSize: "20px",
+            fill: secondary_color,
+        }).setOrigin(0.5);
+
+        this.fakeProgress = 0;
+        this.speed = 1500;
+
+        // listen for loader progress
+        this.load.on("progress", (progress) => {
+            // tweened smooth progress
+            this.tweens.add({
+                targets: this,
+                fakeProgress: progress,
+                duration: this.speed,
+                ease: "Linear",
+                onUpdate: () => {
+                    progressBar.clear();
+                    progressBar.fillStyle(orange_color, 1);
+                    progressBar.fillRoundedRect(
+                        GAME_WIDTH / 2 - 230,
+                        GAME_HEIGHT / 2 - 14,
+                        460 * this.fakeProgress,
+                        28,
+                        8
+                    );
+                    progressText.setText(`Loading: ${Math.round(this.fakeProgress * 100)}%`);
+                }
+            });
+        });
+
+        // load assets here
         this.load.image(LOAD_ASSETS.KEY.LOGO, LOAD_ASSETS.PATH.LOGO);
+        this.load.image(LOAD_ASSETS.KEY.LEFT, LOAD_ASSETS.PATH.LEFT);
+        this.load.image(LOAD_ASSETS.KEY.RIGHT, LOAD_ASSETS.PATH.RIGHT);
+        this.load.image(LOAD_ASSETS.KEY.UP, LOAD_ASSETS.PATH.UP);
+        this.load.image(LOAD_ASSETS.KEY.PLAY, LOAD_ASSETS.PATH.PLAY);
+        this.load.image(LOAD_ASSETS.KEY.PAUSE, LOAD_ASSETS.PATH.PAUSE);
+
+        this.load.audio(LOAD_ASSETS.KEY.HP, LOAD_ASSETS.PATH.HP);
+        this.load.audio(LOAD_ASSETS.KEY.LD, LOAD_ASSETS.PATH.LD);
+        this.load.audio(LOAD_ASSETS.KEY.HL, LOAD_ASSETS.PATH.HL);
+        this.load.audio(LOAD_ASSETS.KEY.END, LOAD_ASSETS.PATH.END);
+        this.load.audio(LOAD_ASSETS.KEY.CL, LOAD_ASSETS.PATH.CL);
+        this.load.audio(LOAD_ASSETS.KEY.ON, LOAD_ASSETS.PATH.ON);
+        this.load.audio(LOAD_ASSETS.KEY.WALK, LOAD_ASSETS.PATH.WALK);
+
+        this.load.spritesheet(LOAD_ASSETS.KEY.PLAYER, LOAD_ASSETS.PATH.PLAYER, { frameWidth: 32, frameHeight: 48 });
     }
 
     create() {
-        //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-        //  For example, you can define global animations here, so we can use them in other scenes.
-
-        //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start(GAME_MENU);
+        this.time.delayedCall(this.speed, () => {
+            this.scene.start(GAME_MENU);
+        });
     }
+
 }
 
 export default Preloader;

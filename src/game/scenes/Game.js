@@ -7,7 +7,6 @@ import {
   LOAD_ASSETS,
   setPower,
   setScore,
-  toggleControls,
   toggleUI,
 } from '../consts';
 import {
@@ -16,12 +15,14 @@ import {
   white_color,
 } from '../consts/colors';
 import {
-  actions,
   boxTextPositions,
   setText,
-  togglePause,
 } from '../utils';
 import spawnBoxes from '../utils/box-factory';
+import {
+  createControls,
+  updateActions,
+} from '../utils/controls';
 import {
   createPowerEffect,
   createScoreEffect,
@@ -38,7 +39,13 @@ class Game extends Phaser.Scene {
         this.power = 100;
         this.score = 0;
         this.isPaused = false;
-        toggleControls(true);
+
+        // Track state
+        this.isLeft = false;
+        this.isRight = false;
+        this.isJump = false;
+
+        //show UI power and score
         toggleUI(true);
     }
 
@@ -61,22 +68,23 @@ class Game extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.powerBoxes, this.collectPowerBox, null, this);
         this.physics.add.overlap(this.player, this.scoreBoxes, this.collectScoreBox, null, this);
 
-        this.input.on("pointerdown", () => togglePause(this), this);
-
         this.pauseText = setText({ scene: this, y: -100, size: 48, text: "PAUSED", color: white_color, stroke: primary_color }).setVisible(false);
-        this.pauseInstructions = setText({ scene: this, text: "Click to Resume", color: primary_color, stroke: success_color }).setVisible(false);
+        this.pauseInstructions = setText({ scene: this, text: "Click button ▶ play to resume", color: primary_color, stroke: success_color }).setVisible(false);
 
         this.walkSound = this.sound.add(LOAD_ASSETS.KEY.WALK, {
             loop: true,   // important: looping enabled
             volume: 0.5,  // adjust as needed
         });
+
+        const isMobile = this.sys.game.device.input.touch;
+        createControls(this, isMobile);
     }
 
     update() {
         if (this.isPaused) return;
 
-        // --- Player movement ---
-        actions(this);
+        // --- Player movement---
+        updateActions(this);
 
         // --- Update box text positions + cleanup ---
         boxTextPositions(this);
@@ -93,7 +101,6 @@ class Game extends Phaser.Scene {
             this.restartGame();
         }
     }
-
 
     // ... keep update, collectPowerBox, collectScoreBox (but now they call imported effects)
     collectPowerBox(player, powerBox) {

@@ -1,8 +1,10 @@
+import { isMobile } from '../../main';
 import {
   GAME_OVER,
   GAME_START,
   LOAD_ASSETS,
   PRESS_RESTART,
+  TAP_RESTART,
   toggleControls,
   toggleUI,
 } from '../consts';
@@ -19,8 +21,8 @@ class GameOver extends Phaser.Scene {
     }
 
     create(data) {
-        toggleControls(data.ui);
-        toggleUI(data.controls);
+        toggleControls({ isVisible: data.controls, isMobile: data.controls });
+        toggleUI(data.ui);
 
         this.cameras.main.setBackgroundColor(secondary_color);
 
@@ -42,7 +44,7 @@ class GameOver extends Phaser.Scene {
             size: fontSize / 2,
             strokeThickness: 10,
         });
-        setText({
+        this.label = setText({
             scene: this,
             y: 100,
             text: PRESS_RESTART,
@@ -61,6 +63,10 @@ class GameOver extends Phaser.Scene {
             this.sound.play(LOAD_ASSETS.KEY.ON);
             this.scene.start(GAME_START);
         });
+    }
+
+    update() {
+        this.label.setText(isMobile() ? TAP_RESTART : PRESS_RESTART);
     }
 }
 

@@ -14,7 +14,7 @@ const createPowerEffect = (scene, x, y, operation, value, oldPower) => {
         blendMode: "ADD",
     });
 
-    scene.time.delayedCall(700, () => particles.destroy());
+    scene.time.delayedCall(700 * 2, () => particles.destroy());
 
     const changeText = operation === "x" ? `Power x${value}!` : `Power ÷${value}`;
     const resultText = `${oldPower} → ${scene.power}`;
@@ -33,7 +33,7 @@ const createScoreEffect = (scene, x, y, operation, value, oldScore) => {
         blendMode: "ADD",
     });
 
-    scene.time.delayedCall(700, () => particles.destroy());
+    scene.time.delayedCall(700 * 2, () => particles.destroy());
 
     const changeText = operation === "+" ? `Score +${value}!` : `Score -${value}`;
     const resultText = `${oldScore} → ${scene.score}`;
@@ -62,7 +62,7 @@ const popupText = (scene, x, y, changeText, resultText, color) => {
         targets: [popup, result],
         y: y - 80,
         alpha: 0,
-        duration: 800,
+        duration: 1000,
         ease: "Power2",
         onComplete: () => { popup.destroy(); result.destroy(); },
     });
