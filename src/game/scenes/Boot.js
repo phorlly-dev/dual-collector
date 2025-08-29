@@ -1,16 +1,16 @@
-import { GAME_BOOT, GAME_PRELOAD, LOAD_ASSETS } from "../consts";
+import Instances from "../consts";
 
 class Boot extends Phaser.Scene {
     constructor() {
-        super(GAME_BOOT);
+        super(Instances.game.boot);
     }
 
     preload() {
-        this.load.image(LOAD_ASSETS.KEY.BACKGROUND, LOAD_ASSETS.VALUE.BACKGROUND);
+        this.load.image(Instances.image.key.bg, Instances.image.value.bg);
     }
 
     create() {
-        this.scene.start(GAME_PRELOAD);
+        this.scene.start(Instances.game.preload);
     }
 }
 

@@ -1,68 +1,67 @@
-import { isMobile } from "../../main";
-import {
-    GAME_OVER,
-    GAME_START,
-    LOAD_ASSETS,
-    PRESS_RESTART,
-    TAP_RESTART,
-    toggleControls,
-    toggleUI,
-} from "../consts";
-import { error_color, primary_color, secondary_color } from "../consts/colors";
-import { setText } from "../utils";
+import Instances from "../consts";
+import Colors from "../consts/colors";
+import Bases from "../utils";
+import Helpers from "../utils/helper";
 
 class GameOver extends Phaser.Scene {
     constructor() {
-        super(GAME_OVER);
+        super(Instances.game.over);
     }
 
     create(data) {
-        toggleControls({ isVisible: data.controls, isMobile: data.controls });
-        toggleUI(data.ui);
+        if (data.ui && data.control) {
+            Helpers.hide({ id: data.control });
+            Helpers.hide({ id: data.ui });
+        }
 
-        this.cameras.main.setBackgroundColor(secondary_color);
+        this.cameras.main.setBackgroundColor(Colors.secondary);
 
-        const fontSize = 64;
-        setText({
+        const fontSize = Instances.game.width / 10;
+        Bases.text({
             scene: this,
             y: -120,
             text: "GAME OVER!",
-            font: "Arial Black",
-            size: fontSize,
-            stroke: primary_color,
-            color: error_color,
+            style: {
+                fontFamily: "Arial Black",
+                fontSize: fontSize,
+                stroke: Colors.primary,
+                color: Colors.error,
+            },
         });
-        setText({
+        Bases.text({
             scene: this,
             y: -12,
             text: `Final Score: ${data.score}`,
-            font: "Arial",
-            size: fontSize / 2,
-            strokeThickness: 10,
+            style: {
+                fontFamily: "Arial",
+                fontSize: fontSize / 2,
+                strokeThickness: 10,
+            },
         });
-        this.label = setText({
+        this.label = Bases.text({
             scene: this,
             y: 100,
-            text: PRESS_RESTART,
-            font: "Lucida Console",
-            size: fontSize / 4,
-            color: primary_color,
-            strokeThickness: 8,
+            text: "",
+            style: {
+                fontFamily: "Lucida Console",
+                fontSize: fontSize / 3,
+                color: Colors.primary,
+                strokeThickness: 8,
+            },
         });
 
-        this.input.once("pointerdown", () => {
-            this.sound.play(LOAD_ASSETS.KEY.ON);
-            this.scene.start(GAME_START);
-        });
-
-        this.input.keyboard.on("keydown-SPACE", () => {
-            this.sound.play(LOAD_ASSETS.KEY.ON);
-            this.scene.start(GAME_START);
+        Helpers.event({
+            scene: this,
+            keys: ["keydown-SPACE", "pointerdown"],
+            callback: () => {
+                this.scene.start(Instances.game.start);
+                Helpers.playSound(this, Instances.audio.key.start);
+            },
         });
     }
 
     update() {
-        this.label.setText(isMobile() ? TAP_RESTART : PRESS_RESTART);
+        this.label.setText(Bases.isMobile() ? Instances.game.tapRestart : Instances.game.pressRestart);
     }
 }
 

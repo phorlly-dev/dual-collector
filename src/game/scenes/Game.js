@@ -1,53 +1,31 @@
-import { applyDevice } from "../../main";
-import {
-    exponentFromValue,
-    GAME_HEIGHT,
-    GAME_OVER,
-    GAME_START,
-    GAME_WIDTH,
-    LOAD_ASSETS,
-    setPower,
-    setScore,
-    toggleUI,
-} from "../consts";
-import { primary_color, success_color, white_color } from "../consts/colors";
-import { boxTextPositions, setText } from "../utils";
+import Instances from "../consts";
+import Colors from "../consts/colors.js";
 import spawnBoxes from "../utils/box-factory";
-import { createControls, updateActions } from "../utils/controls";
-import { createBombEffect, createPowerEffect, createScoreEffect } from "../utils/effects";
-import createPlayerAnimations from "../utils/player-anims";
+import Controls from "../utils/control.js";
+import Effects from "../utils/effect.js";
+import Helpers from "../utils/helper.js";
+import Bases from "../utils/index.js";
+import Objects from "../utils/object.js";
 
 class Game extends Phaser.Scene {
     constructor() {
-        super(GAME_START);
+        super(Instances.game.start);
     }
 
     init() {
-        this.player = null;
         this.power = 100;
         this.score = 0;
         this.isPaused = false;
 
-        // Track state
-        this.isLeft = false;
-        this.isRight = false;
-        this.isJump = false;
-
         //show UI power and score
-        applyDevice();
-        toggleUI(true);
+        Helpers.show({ id: Instances.control.ui });
     }
 
     create() {
-        this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, LOAD_ASSETS.KEY.BACKGROUND).alpha = 0.7;
+        this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).alpha = 0.3;
 
-        this.player = this.physics.add
-            .sprite(GAME_WIDTH / 2, GAME_HEIGHT, LOAD_ASSETS.KEY.PLAYER)
-            .setBounce(0.2)
-            .setScale(1.8);
-        this.player.body.setCollideWorldBounds(true);
-
-        createPlayerAnimations(this);
+        this.player = Objects.player(this);
+        Objects.animations(this);
 
         this.powerBoxes = this.physics.add.group();
         this.scoreBoxes = this.physics.add.group();
@@ -67,47 +45,53 @@ class Game extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.scoreBoxes, this.collectScoreBox, null, this);
         this.physics.add.overlap(this.player, this.bombBoxes, this.hitBomb, null, this);
 
-        this.pauseText = setText({
+        this.pauseText = Bases.text({
             scene: this,
-            y: -100,
-            size: 48,
+            y: -80,
             text: "PAUSED",
-            color: white_color,
-            stroke: primary_color,
-        }).setVisible(false);
-        this.pauseInstructions = setText({
+            style: {
+                fontSize: 48,
+                color: Colors.white,
+                stroke: Colors.primary,
+            },
+            isVisible: false,
+        });
+        this.pauseInstructions = Bases.text({
             scene: this,
             text: "Click button ▶ play to resume",
-            color: primary_color,
-            stroke: success_color,
-        }).setVisible(false);
-
-        this.walkSound = this.sound.add(LOAD_ASSETS.KEY.WALK, {
-            loop: true, // important: looping enabled
-            volume: 0.5, // adjust as needed
+            style: {
+                color: Colors.primary,
+                stroke: Colors.success,
+                fontSize: 24,
+                strokeThickness: 8,
+            },
+            isVisible: false,
         });
 
         const isMobile = this.sys.game.device.input.touch;
-        createControls(this, isMobile);
+        Controls.toggleControls(isMobile);
+        Controls.buttons(this);
+
+        this.walk = this.sound.add(Instances.audio.key.walk, { loop: true });
     }
 
     update() {
         if (this.isPaused) return;
 
         // --- Player movement---
-        updateActions(this);
+        Controls.actions(this);
 
         // --- Update box text positions + cleanup ---
-        boxTextPositions(this);
+        Helpers.textBoxes(this);
 
         // --- Game over check ---
         if (this.power <= 0) {
-            this.sound.play(LOAD_ASSETS.KEY.END);
             this.time.delayedCall(800, () => {
-                this.scene.start(GAME_OVER, {
+                Helpers.playSound(this, Instances.audio.key.end);
+                this.scene.start(Instances.game.over, {
                     score: this.score,
-                    ui: false,
-                    controls: false,
+                    ui: Instances.control.ui,
+                    control: Instances.control.card,
                 });
 
                 this.restartGame();
@@ -118,23 +102,23 @@ class Game extends Phaser.Scene {
     // ... keep update, collectPowerBox, collectScoreBox (but now they call imported effects)
     collectPowerBox(player, powerBox) {
         if (powerBox.operation === "x") {
-            this.sound.play(LOAD_ASSETS.KEY.HP);
-            this.power += exponentFromValue(powerBox.value) * 10;
+            this.power += Bases.exponentFromValue(powerBox.value) * 10;
+            Helpers.playSound(this, Instances.audio.key.power);
         } else if (powerBox.operation === "/") {
-            this.sound.play(LOAD_ASSETS.KEY.HL);
             this.power = Math.floor(this.power / powerBox.value);
+            Helpers.playSound(this, Instances.audio.key.cut);
         }
 
-        this.sound.play(LOAD_ASSETS.KEY.LD);
-        createPowerEffect(
-            this,
-            powerBox.x,
-            powerBox.y,
-            powerBox.operation,
-            powerBox.value,
-            this.power
-        );
-        setPower(this.power);
+        Effects.power({
+            scene: this,
+            x: powerBox.x,
+            y: powerBox.y,
+            operation: powerBox.operation,
+            value: powerBox.value,
+            oldPower: this.power,
+        });
+        Helpers.setPower(this.power);
+        Helpers.playSound(this, Instances.audio.key.effect);
 
         if (powerBox.textObj) powerBox.textObj.destroy();
         powerBox.destroy();
@@ -142,23 +126,23 @@ class Game extends Phaser.Scene {
 
     collectScoreBox(player, scoreBox) {
         if (scoreBox.operation === "+") {
-            this.sound.play(LOAD_ASSETS.KEY.HP);
             this.score += scoreBox.value;
+            Helpers.playSound(this, Instances.audio.key.power);
         } else if (scoreBox.operation === "-") {
-            this.sound.play(LOAD_ASSETS.KEY.HL);
             this.score = Math.max(0, this.score - scoreBox.value);
+            Helpers.playSound(this, Instances.audio.key.cut);
         }
 
-        this.sound.play(LOAD_ASSETS.KEY.LD);
-        createScoreEffect(
-            this,
-            scoreBox.x,
-            scoreBox.y,
-            scoreBox.operation,
-            scoreBox.value,
-            this.score
-        );
-        setScore(this.score);
+        Effects.score({
+            scene: this,
+            x: scoreBox.x,
+            y: scoreBox.y,
+            operation: scoreBox.operation,
+            value: scoreBox.value,
+            oldScore: this.score,
+        });
+        Helpers.setScore(this.score);
+        Helpers.playSound(this, Instances.audio.key.effect);
 
         if (scoreBox.textObj) scoreBox.textObj.destroy();
         scoreBox.destroy();
@@ -167,18 +151,18 @@ class Game extends Phaser.Scene {
     hitBomb(player, bomb) {
         // Power instantly goes to 0
         this.power = 0;
-        setPower(this.power);
+        Helpers.setPower(this.power);
 
-        this.sound.play(LOAD_ASSETS.KEY.BX);
-        createBombEffect(this, bomb);
+        Effects.bomb(this, bomb);
+        Helpers.playSound(this, Instances.audio.key.bomb);
     }
 
     restartGame() {
         this.power = 100;
         this.score = 0;
         this.isPaused = false;
-        setPower(this.power);
-        setScore(this.score);
+        Helpers.setPower(this.power);
+        Helpers.setScore(this.score);
     }
 }
 

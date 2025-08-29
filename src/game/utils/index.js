@@ -1,87 +1,116 @@
-import { GAME_HEIGHT, GAME_WIDTH, LOAD_ASSETS } from "../consts";
-import { black_color, white_color } from "../consts/colors";
+import Instances from "../consts";
+import Colors from "../consts/colors";
 
-const togglePause = (scene) => {
-    scene.isPaused = !scene.isPaused;
-
-    if (scene.isPaused) {
-        // Pause the game
-        scene.physics.pause();
-        scene.spawnTimer.paused = true;
-        scene.pauseText.setVisible(true);
-        scene.pauseInstructions.setVisible(true);
-        scene.sound.play(LOAD_ASSETS.KEY.CL);
-
-        scene.pauseBtn.setVisible(false);
-        scene.playBtn.setVisible(true);
-    } else {
-        // Resume the game
-        scene.physics.resume();
-        scene.spawnTimer.paused = false;
-        scene.pauseText.setVisible(false);
-        scene.pauseInstructions.setVisible(false);
-        scene.sound.play(LOAD_ASSETS.KEY.ON);
-
-        scene.pauseBtn.setVisible(true);
-        scene.playBtn.setVisible(false);
-    }
-};
-
-const boxTextPositions = (scene) => {
-    scene.powerBoxes.children.entries.forEach((box) => {
-        if (box.textObj) {
-            box.textObj.x = box.x;
-            box.textObj.y = box.y;
-        }
-        if (box.y > GAME_HEIGHT + 50) {
-            if (box.textObj) box.textObj.destroy();
-            box.destroy();
-        }
-    });
-
-    scene.scoreBoxes.children.entries.forEach((box) => {
-        if (box.textObj) {
-            box.textObj.x = box.x;
-            box.textObj.y = box.y;
-        }
-        if (box.y > GAME_HEIGHT + 50) {
-            if (box.textObj) box.textObj.destroy();
-            box.destroy();
-        }
-    });
-
-    scene.bombBoxes.children.entries.forEach((bomb) => {
-        if (bomb.textObj) {
-            bomb.textObj.x = bomb.x;
-            bomb.textObj.y = bomb.y;
-        }
-        if (bomb.y > GAME_HEIGHT + 50) {
-            if (bomb.textObj) bomb.textObj.destroy();
-            bomb.destroy();
-        }
-    });
-};
-
-const fontSize = Math.max(12, GAME_WIDTH / 50);
-const setText = ({
-    scene,
-    y = 0,
-    text,
-    font = "Arial",
-    size = fontSize,
-    color = white_color,
-    stroke = black_color,
-    strokeThickness = 12,
-}) =>
-    scene.add
-        .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + y, text, {
-            fontFamily: font,
-            fontSize: size,
-            fill: color,
-            stroke: stroke,
-            strokeThickness: strokeThickness,
+const Bases = {
+    text: ({ scene, y = 0, text, style = {}, isVisible = true }) => {
+        const sty = {
+            fontFamily: "Arial",
+            fontSize: Math.max(12, Instances.game.width / 30),
+            color: Colors.white,
+            stroke: Colors.black,
+            strokeThickness: 3,
             align: "center",
-        })
-        .setOrigin(0.5);
+        };
 
-export { boxTextPositions, setText, togglePause };
+        return scene.add
+            .text(Instances.game.width / 2, Instances.game.height / 2 + y, text, {
+                ...sty,
+                ...style,
+            })
+            .setOrigin(0.5)
+            .setVisible(isVisible);
+    },
+    flashScreen: ({ scene, color, alpha }) => {
+        const flash = scene.add.rectangle(
+            Instances.game.width / 2,
+            Instances.game.height / 2,
+            Instances.game.width,
+            Instances.game.height,
+            color,
+            alpha
+        );
+        scene.tweens.add({
+            targets: flash,
+            alpha: 0,
+            duration: 250,
+            onComplete: () => flash.destroy(),
+        });
+    },
+    particle: ({ scene, x, y, options = {} }) => {
+        const opt = {
+            speed: { min: 50, max: 150 },
+            scale: { start: 0.5, end: 0 },
+            lifespan: 600,
+            quantity: 12,
+            tint: 0xe67e22,
+            blendMode: "ADD",
+        };
+        const particles = scene.add.particles(x, y, "particle", {
+            ...opt,
+            ...options,
+        });
+
+        return scene.time.delayedCall(700, () => particles.destroy());
+    },
+    getById: (id) => document.getElementById(id),
+    exponentFromValue: (value) => {
+        const exp = Math.log2(value);
+
+        return Number.isInteger(exp) ? exp : value;
+    },
+    powersOf2: (value) => Math.pow(2, value),
+
+    isMobile: () => /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768,
+    textBox: ({
+        scene,
+        x,
+        y,
+        element,
+        operator,
+        value,
+        bg = Colors.orange,
+        color = Colors.white,
+        fontSize = 24,
+        stroke = Colors.success,
+        strokeThickness = 3,
+        velocityY = 120,
+        radius = 12,
+        width = 60,
+        height = 60,
+    }) => {
+        // === Draw box centered ===
+        const box = scene.add.graphics();
+        box.fillStyle(bg, 1);
+        box.fillRoundedRect(-(width / 2), -(height / 2), width, height, radius);
+        box.x = x;
+        box.y = y;
+
+        // Add physics
+        scene.physics.add.existing(box);
+        element.add(box);
+        box.body.setVelocityY(velocityY);
+
+        // Save metadata
+        box.operation = operator;
+        box.value = value;
+
+        // === Add centered text ===
+        const text = scene.add
+            .text(x, y, `${operator}${value}`, {
+                fontSize: `${fontSize}px`,
+                color,
+                fontWeight: "bold",
+                stroke,
+                strokeThickness,
+                align: "center",
+            })
+            .setOrigin(0.5);
+
+        // Link text to box
+        box.textObj = text;
+
+        return box;
+    },
+};
+
+export default Bases;

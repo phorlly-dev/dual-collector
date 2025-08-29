@@ -1,100 +1,67 @@
-const GAME_WIDTH = 800;
-const GAME_HEIGHT = 600;
-const GAME_MENU = "game-menu";
-const GAME_OVER = "game-over";
-const GAME_BOOT = "game-boot";
-const GAME_START = "game-start";
-const GAME_PRELOAD = "game-preload";
+const Instances = {
+    game: {
+        width: 800,
+        height: 600,
+        menu: "game-menu",
+        over: "game-over",
+        boot: "game-boot",
+        start: "game-start",
+        preload: "game-preload",
 
-const TAP_START = "Click to Start Game";
-const TAP_RESTART = "Click to Restart Game";
-const PRESS_START = "Click or Press SPACE to Start Game";
-const PRESS_RESTART = "Click or Press SPACE to Restart Game";
-
-const LOAD_ASSETS = {
-    KEY: {
-        BACKGROUND: "background",
-        LOGO: "logo",
-        PLAYER: "player",
-        HP: "hp",
-        LD: "ld",
-        HL: "hl",
-        END: "end",
-        CL: "cl",
-        ON: "on",
-        WALK: "walk",
-        LEFT: "left",
-        RIGHT: "right",
-        UP: "up",
-        PLAY: "play",
-        PAUSE: "pause",
-        BOMB: "bomb",
-        BX: "bx",
+        tapStart: "Click on screen to start",
+        tapRestart: "Click on screen to restart",
+        pressStart: "Click on screen or Press SPACE to start",
+        pressRestart: "Click on screen or Press SPACE to restart",
     },
-    VALUE: {
-        //images
-        BACKGROUND: "assets/images/bg.png",
-        LOGO: "assets/images/logo.png",
-        PLAYER: "assets/images/player.png",
-        LEFT: "assets/images/left.png",
-        RIGHT: "assets/images/right.png",
-        UP: "assets/images/up.png",
-        PLAY: "assets/images/play.png",
-        PAUSE: "assets/images/pause.png",
-        BOMB: "assets/images/bomb.png",
-
-        ///audios
-        HP: "assets/audios/hp.mp3",
-        LD: "assets/audios/ld.mp3",
-        HL: "assets/audios/hl.wav",
-        END: "assets/audios/end.wav",
-        CL: "assets/audios/cl.ogg",
-        ON: "assets/audios/on.ogg",
-        ON: "assets/audios/on.ogg",
-        WALK: "assets/audios/walk.ogg",
-        BX: "assets/audios/bx.wav",
+    control: {
+        left: "left-btn",
+        right: "right-btn",
+        up: "up-btn",
+        play: "play-btn",
+        pause: "pause-btn",
+        desktop: "desktop-btn",
+        mobile: "mobile-btn",
+        on: "on-btn",
+        off: "off-btn",
+        card: "controls-card",
+        ui: "ui",
+    },
+    image: {
+        key: {
+            bg: "background",
+            logo: "logo",
+            player: "player",
+            bomb: "bomb",
+        },
+        value: {
+            bg: "assets/images/bg.png",
+            logo: "assets/images/logo.png",
+            player: "assets/images/player.png",
+            bomb: "assets/images/bomb.png",
+        },
+    },
+    audio: {
+        key: {
+            power: "power",
+            effect: "effect",
+            cut: "cut",
+            end: "end",
+            click: "click",
+            start: "start",
+            walk: "walk",
+            bomb: "bomb",
+        },
+        value: {
+            power: "assets/audios/hp.mp3",
+            effect: "assets/audios/ld.mp3",
+            cut: "assets/audios/hl.wav",
+            end: "assets/audios/end.wav",
+            click: "assets/audios/cl.ogg",
+            start: "assets/audios/on.ogg",
+            walk: "assets/audios/walk.ogg",
+            bomb: "assets/audios/bx.wav",
+        },
     },
 };
 
-const toggleControls = ({ isVisible, isMobile = false }) => {
-    getById("controls-desktop").style.display = isVisible ? "block" : "none";
-    getById("controls-mobile").style.display = isMobile ? "block" : "none";
-};
-
-const toggleUI = (isVisible) => (getById("ui").style.display = isVisible ? "block" : "none");
-
-const setPower = (power) => (getById("power").textContent = power);
-
-const setScore = (score) => (getById("score").textContent = score);
-
-const powersOf2 = (val) => Math.pow(2, val);
-
-const exponentFromValue = (val) => {
-    const exp = Math.log2(val);
-
-    return Number.isInteger(exp) ? exp : val;
-};
-
-const getById = (id) => document.getElementById(id);
-
-export {
-    exponentFromValue,
-    GAME_BOOT,
-    GAME_HEIGHT,
-    GAME_MENU,
-    GAME_OVER,
-    GAME_PRELOAD,
-    GAME_START,
-    GAME_WIDTH,
-    getById,
-    LOAD_ASSETS,
-    powersOf2,
-    PRESS_RESTART,
-    PRESS_START,
-    setPower,
-    setScore,
-    TAP_RESTART,
-    TAP_START,
-    toggleControls,
-    toggleUI,
-};
+export default Instances;

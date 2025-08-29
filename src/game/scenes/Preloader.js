@@ -1,30 +1,34 @@
-import { GAME_HEIGHT, GAME_MENU, GAME_PRELOAD, GAME_WIDTH, LOAD_ASSETS } from "../consts";
-import { orange_color, secondary_color } from "../consts/colors";
+import Instances from "../consts";
+import Colors from "../consts/colors";
+import Bases from "../utils";
 
 class Preloader extends Phaser.Scene {
     constructor() {
-        super(GAME_PRELOAD);
+        super(Instances.game.preload);
     }
 
     preload() {
         // background
-        this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, LOAD_ASSETS.KEY.BACKGROUND).alpha = 0.8;
+        this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).alpha = 0.8;
 
         // progress container (outline with rounded corners)
         const progressBox = this.add.graphics();
         progressBox.lineStyle(2, 0xffffff, 1);
-        progressBox.strokeRoundedRect(GAME_WIDTH / 2 - 230, GAME_HEIGHT / 2 - 14, 460, 28, 8);
+        progressBox.strokeRoundedRect(Instances.game.width / 2 - 230, Instances.game.height / 2 - 14, 460, 28, 8);
 
         // progress bar (filled rounded rect)
         const progressBar = this.add.graphics();
 
         // text
-        const progressText = this.add
-            .text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 50, "Loading: 0%", {
+        const progressText = Bases.text({
+            scene: this,
+            y: 50,
+            text: "Loading: 0%",
+            style: {
                 fontSize: "20px",
-                fill: secondary_color,
-            })
-            .setOrigin(0.5);
+                fill: Colors.secondary,
+            },
+        });
 
         this.fakeProgress = 0;
         this.speed = 1500;
@@ -39,10 +43,10 @@ class Preloader extends Phaser.Scene {
                 ease: "Linear",
                 onUpdate: () => {
                     progressBar.clear();
-                    progressBar.fillStyle(orange_color, 1);
+                    progressBar.fillStyle(Colors.orange, 1);
                     progressBar.fillRoundedRect(
-                        GAME_WIDTH / 2 - 230,
-                        GAME_HEIGHT / 2 - 14,
+                        Instances.game.width / 2 - 230,
+                        Instances.game.height / 2 - 14,
                         460 * this.fakeProgress,
                         28,
                         8
@@ -53,32 +57,26 @@ class Preloader extends Phaser.Scene {
         });
 
         // load assets here
-        this.load.image(LOAD_ASSETS.KEY.LOGO, LOAD_ASSETS.VALUE.LOGO);
-        this.load.image(LOAD_ASSETS.KEY.LEFT, LOAD_ASSETS.VALUE.LEFT);
-        this.load.image(LOAD_ASSETS.KEY.RIGHT, LOAD_ASSETS.VALUE.RIGHT);
-        this.load.image(LOAD_ASSETS.KEY.UP, LOAD_ASSETS.VALUE.UP);
-        this.load.image(LOAD_ASSETS.KEY.PLAY, LOAD_ASSETS.VALUE.PLAY);
-        this.load.image(LOAD_ASSETS.KEY.PAUSE, LOAD_ASSETS.VALUE.PAUSE);
-        this.load.image(LOAD_ASSETS.KEY.BOMB, LOAD_ASSETS.VALUE.BOMB);
-
-        this.load.audio(LOAD_ASSETS.KEY.HP, LOAD_ASSETS.VALUE.HP);
-        this.load.audio(LOAD_ASSETS.KEY.LD, LOAD_ASSETS.VALUE.LD);
-        this.load.audio(LOAD_ASSETS.KEY.HL, LOAD_ASSETS.VALUE.HL);
-        this.load.audio(LOAD_ASSETS.KEY.END, LOAD_ASSETS.VALUE.END);
-        this.load.audio(LOAD_ASSETS.KEY.CL, LOAD_ASSETS.VALUE.CL);
-        this.load.audio(LOAD_ASSETS.KEY.ON, LOAD_ASSETS.VALUE.ON);
-        this.load.audio(LOAD_ASSETS.KEY.WALK, LOAD_ASSETS.VALUE.WALK);
-        this.load.audio(LOAD_ASSETS.KEY.BX, LOAD_ASSETS.VALUE.BX);
-
-        this.load.spritesheet(LOAD_ASSETS.KEY.PLAYER, LOAD_ASSETS.VALUE.PLAYER, {
+        this.load.image(Instances.image.key.logo, Instances.image.value.logo);
+        this.load.image(Instances.image.key.bomb, Instances.image.value.bomb);
+        this.load.spritesheet(Instances.image.key.player, Instances.image.value.player, {
             frameWidth: 32,
             frameHeight: 48,
         });
+
+        this.load.audio(Instances.audio.key.power, Instances.audio.value.power);
+        this.load.audio(Instances.audio.key.effect, Instances.audio.value.effect);
+        this.load.audio(Instances.audio.key.cut, Instances.audio.value.cut);
+        this.load.audio(Instances.audio.key.end, Instances.audio.value.end);
+        this.load.audio(Instances.audio.key.click, Instances.audio.value.click);
+        this.load.audio(Instances.audio.key.start, Instances.audio.value.start);
+        this.load.audio(Instances.audio.key.walk, Instances.audio.value.walk);
+        this.load.audio(Instances.audio.key.bomb, Instances.audio.value.bomb);
     }
 
     create() {
         this.time.delayedCall(this.speed, () => {
-            this.scene.start(GAME_MENU);
+            this.scene.start(Instances.game.menu);
         });
     }
 }
