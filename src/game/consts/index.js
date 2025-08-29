@@ -50,6 +50,7 @@ const Instances = {
             start: "start",
             walk: "walk",
             bomb: "bomb",
+            playing: "playing",
         },
         value: {
             power: "assets/audios/hp.mp3",
@@ -60,6 +61,7 @@ const Instances = {
             start: "assets/audios/on.ogg",
             walk: "assets/audios/walk.ogg",
             bomb: "assets/audios/bx.wav",
+            playing: "assets/audios/playing.mp3",
         },
     },
 };

@@ -72,6 +72,7 @@ class Preloader extends Phaser.Scene {
         this.load.audio(Instances.audio.key.start, Instances.audio.value.start);
         this.load.audio(Instances.audio.key.walk, Instances.audio.value.walk);
         this.load.audio(Instances.audio.key.bomb, Instances.audio.value.bomb);
+        this.load.audio(Instances.audio.key.playing, Instances.audio.value.playing);
     }
 
     create() {

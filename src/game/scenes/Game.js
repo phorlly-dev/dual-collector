@@ -16,12 +16,10 @@ class Game extends Phaser.Scene {
         this.power = 100;
         this.score = 0;
         this.isPaused = false;
-
-        //show UI power and score
-        Helpers.show({ id: Instances.control.ui });
     }
 
     create() {
+        Helpers.show({ id: Instances.control.ui });
         this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).alpha = 0.3;
 
         this.player = Objects.player(this);
@@ -72,7 +70,7 @@ class Game extends Phaser.Scene {
         Controls.toggleControls(isMobile);
         Controls.buttons(this);
 
-        this.walk = this.sound.add(Instances.audio.key.walk, { loop: true });
+        this.walk = this.sound.add(Instances.audio.key.walk, { loop: true, volume: 0.8 });
     }
 
     update() {
