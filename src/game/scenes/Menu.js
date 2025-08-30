@@ -17,7 +17,6 @@ class Menu extends Phaser.Scene {
     create() {
         this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).alpha = 0.8;
         this.add.image(Instances.game.width / 2, Instances.game.height / 2 - 100, Instances.image.key.logo);
-        this.sound.play(Instances.audio.key.playing, { loop: true, volume: 0.5 });
 
         this.label = Bases.text({
             scene: this,

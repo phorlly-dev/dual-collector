@@ -4,8 +4,9 @@ import spawnBoxes from "../utils/box-factory";
 import Controls from "../utils/control.js";
 import Effects from "../utils/effect.js";
 import Helpers from "../utils/helper.js";
-import Bases from "../utils/index.js";
+import Bases from "../utils";
 import Objects from "../utils/object.js";
+import States from "../utils/state.js";
 
 class Game extends Phaser.Scene {
     constructor() {
@@ -21,6 +22,7 @@ class Game extends Phaser.Scene {
     create() {
         Helpers.show({ id: Instances.control.ui });
         this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).alpha = 0.3;
+        this.sound.play(Instances.audio.key.playing, { loop: true, volume: 0.5 });
 
         this.player = Objects.player(this);
         Objects.animations(this);
@@ -43,31 +45,9 @@ class Game extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.scoreBoxes, this.collectScoreBox, null, this);
         this.physics.add.overlap(this.player, this.bombBoxes, this.hitBomb, null, this);
 
-        this.pauseText = Bases.text({
-            scene: this,
-            y: -80,
-            text: "PAUSED",
-            style: {
-                fontSize: 48,
-                color: Colors.white,
-                stroke: Colors.primary,
-            },
-            isVisible: false,
-        });
-        this.pauseInstructions = Bases.text({
-            scene: this,
-            text: "Click button ▶ play to resume",
-            style: {
-                color: Colors.primary,
-                stroke: Colors.success,
-                fontSize: 24,
-                strokeThickness: 8,
-            },
-            isVisible: false,
-        });
-
         const isMobile = this.sys.game.device.input.touch;
         Controls.toggleControls(isMobile);
+        States.ui(this);
         Controls.buttons(this);
 
         this.walk = this.sound.add(Instances.audio.key.walk, { loop: true, volume: 0.8 });
@@ -101,10 +81,8 @@ class Game extends Phaser.Scene {
     collectPowerBox(player, powerBox) {
         if (powerBox.operation === "x") {
             this.power += Bases.exponentFromValue(powerBox.value) * 10;
-            Helpers.playSound(this, Instances.audio.key.power);
         } else if (powerBox.operation === "/") {
             this.power = Math.floor(this.power / powerBox.value);
-            Helpers.playSound(this, Instances.audio.key.cut);
         }
 
         Effects.power({
@@ -115,8 +93,9 @@ class Game extends Phaser.Scene {
             value: powerBox.value,
             oldPower: this.power,
         });
+
         Helpers.setPower(this.power);
-        Helpers.playSound(this, Instances.audio.key.effect);
+        Helpers.playSound(this, States.getSoundKey(powerBox.operation));
 
         if (powerBox.textObj) powerBox.textObj.destroy();
         powerBox.destroy();
@@ -125,10 +104,8 @@ class Game extends Phaser.Scene {
     collectScoreBox(player, scoreBox) {
         if (scoreBox.operation === "+") {
             this.score += scoreBox.value;
-            Helpers.playSound(this, Instances.audio.key.power);
         } else if (scoreBox.operation === "-") {
             this.score = Math.max(0, this.score - scoreBox.value);
-            Helpers.playSound(this, Instances.audio.key.cut);
         }
 
         Effects.score({
@@ -139,8 +116,9 @@ class Game extends Phaser.Scene {
             value: scoreBox.value,
             oldScore: this.score,
         });
+
         Helpers.setScore(this.score);
-        Helpers.playSound(this, Instances.audio.key.effect);
+        Helpers.playSound(this, States.getSoundKey(scoreBox.operation));
 
         if (scoreBox.textObj) scoreBox.textObj.destroy();
         scoreBox.destroy();

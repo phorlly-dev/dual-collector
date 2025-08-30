@@ -5,8 +5,8 @@ const spawnBoxes = (scene) => {
     if (scene.isPaused) return;
 
     const setY = -50;
-    const strokeThickness = 20;
-    const fontSize = Math.max(12, Instances.game.width / 50);
+    const strokeThickness = 12;
+    const fontSize = Math.max(12, Instances.game.width / 46);
 
     // Define 3 fixed lanes
     const lanes = [150, 400, 650];

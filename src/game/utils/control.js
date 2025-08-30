@@ -1,7 +1,9 @@
 import Bases from ".";
 import Instances from "../consts";
+import Colors from "../consts/colors";
 import Helpers from "./helper";
 import Objects from "./object";
+import States from "./state";
 
 const Controls = {
     buttons: (scene) => {
@@ -19,33 +21,18 @@ const Controls = {
             keys: ["isLeft", "isRight", "isJump"],
         });
 
-        Objects.bindToggleButtons({ scene, elements: [scene.pauseBtn, scene.playBtn], callback: Helpers.togglePause });
+        Objects.bindToggleButtons({ scene, elements: [scene.pauseBtn, scene.playBtn], callback: States.togglePause });
     },
     actions: (scene) => {
         // Left movement
-        if (scene.cursors.left.isDown || scene.as.A.isDown || scene.isLeft) {
-            scene.player.setVelocityX(-160);
-            scene.player.anims.play("left", true);
-            Helpers.playIfNotPlaying(scene.walk);
-        }
-
+        if (scene.cursors.left.isDown || scene.as.A.isDown || scene.isLeft) Bases.moveLeft(scene);
         // Right movement
-        else if (scene.cursors.right.isDown || scene.as.S.isDown || scene.isRight) {
-            scene.player.setVelocityX(160);
-            scene.player.anims.play("right", true);
-            Helpers.playIfNotPlaying(scene.walk);
-        }
-
+        else if (scene.cursors.right.isDown || scene.as.S.isDown || scene.isRight) Bases.moveRight(scene);
         // Idle
-        else {
-            scene.player.setVelocityX(0);
-            scene.player.anims.play("turn");
-            Helpers.stopIfPlaying(scene.walk);
-        }
+        else Bases.stop(scene);
 
         // Jump
-        if (scene.cursors.space.isDown || scene.isJump) scene.player.setVelocityY(-330);
-        else scene.player.setVelocityY(Instances.game.height); // gravity fallback
+        scene.cursors.space.isDown || scene.isJump ? Bases.jump(scene) : Bases.fallback(scene);
     },
     toggleMute: (scene) => {
         // In your scene create/init

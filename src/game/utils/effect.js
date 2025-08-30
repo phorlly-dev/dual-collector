@@ -1,6 +1,6 @@
 import Bases from ".";
 import Colors from "../consts/colors";
-import Helpers from "./helper";
+import States from "./state";
 
 const Effects = {
     power: ({ scene, x, y, operation, value, oldPower }) => {
@@ -9,7 +9,7 @@ const Effects = {
         const changeText = operation === "x" ? `Power x${value}!` : `Power ÷${value}`;
         const resultText = `${oldPower} → ${scene.power}`;
 
-        Helpers.textPopup({ scene, x, y, changeText, resultText, color: Colors.warning });
+        States.textPopup({ scene, x, y, changeText, resultText, color: Colors.warning });
         Bases.flashScreen({ scene: scene, color: 0x9b59b6, alpha: 0.3 });
     },
     score: ({ scene, x, y, operation, value, oldScore }) => {
@@ -18,7 +18,7 @@ const Effects = {
         const changeText = operation === "+" ? `Score +${value}!` : `Score -${value}`;
         const resultText = `${oldScore} → ${scene.score}`;
 
-        Helpers.textPopup({ scene, x, y, changeText, resultText, color: Colors.success });
+        States.textPopup({ scene, x, y, changeText, resultText, color: Colors.success });
         Bases.flashScreen({ scene: scene, color: 0xe67e22, alpha: 0.2 });
     },
     bomb: (scene, bomb) => {

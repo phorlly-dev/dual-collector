@@ -1,4 +1,6 @@
-/* Global Reset & Base */
+/* =======================
+   GLOBAL RESET & BASE
+======================= */
 body {
     margin: 0;
     padding: 0;
@@ -11,63 +13,45 @@ body {
     color: #ecf0f1;
 }
 
+/* Game canvas */
 #phaser-game canvas {
     width: 100% !important;
     height: 100% !important;
-    border-radius: 17px;
+    border-radius: 15px;
     display: block;
 }
 
-/* UI Panel */
-#ui.container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding: 15px 25px;
-    border-radius: 15px;
-    background: rgba(44, 62, 80, 0.6);
-    /* semi-transparent glass */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-    margin-bottom: 15px;
-}
-
-/* Wrapper for both sections */
-.ui-wrapper {
-    display: flex;
-    flex-direction: column;
-    /* stack vertically */
-    align-items: center;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-/* Main container */
+/* =======================
+   WRAPPER
+======================= */
 #game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    max-width: 100%;
+    width: 100%;
+    max-width: 900px; /* center limit */
+    padding: 10px;
 }
 
-/* Row 1: UI row */
+/* =======================
+   TOP UI ROW (Status + Actions)
+======================= */
 .ui-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #2c3e50;
+    background: #1e2a38;
     padding: 12px 20px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     width: 95%;
-    max-width: 650px;
+    max-width: 700px;
+    flex-wrap: wrap; /* responsive */
+    gap: 10px;
 }
 
-/* Left (Power/Score) */
+/* Status area */
 .ui-row .status {
     display: flex;
     gap: 10px;
@@ -75,208 +59,143 @@ body {
     font-weight: bold;
 }
 
-/* Right (Buttons) */
-.ui-row .actions {
-    display: flex;
-    gap: 10px;
-}
-
-/* Power / Score styling */
-.power,
-.score {
+.ui-row .power,
+.ui-row .score {
     background: rgba(255, 255, 255, 0.08);
     padding: 6px 12px;
     border-radius: 8px;
     font-size: 1rem;
 }
 
-/* Row 2: Game */
+/* Buttons area */
+.ui-row .actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* =======================
+   GAME WRAPPER
+======================= */
 #phaser-game {
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    max-width: 95%;
+    max-width: 100%;
 }
 
-/* Row 3: Controls */
+/* =======================
+   CONTROLS ROW (Mobile)
+======================= */
 .controls-row {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    padding: 12px 20px;
-    border-radius: 12px;
-    background: #2c3e50;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-/* Responsive: shrink Power/Score text on mobile */
-@media (max-width: 768px) {
-    .power,
-    .score {
-        font-size: 0.85rem;
-        padding: 4px 8px;
-    }
-
-    .ui-row {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-    }
-}
-
-/* Desktop hides mobile controls */
-@media (min-width: 769px) {
-    .controls-row {
-        display: none; /* hide on desktop */
-    }
-}
-
-/* Mobile shows controls */
-@media (max-width: 768px) {
-    .controls-row {
-        display: flex; /* show on mobile */
-    }
-}
-
-/* Top row (Power, Score, Play, Mute) */
-.ui-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #2c3e50;
-    padding: 12px 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    width: 90%;
-    max-width: 600px;
-    gap: 10px;
-}
-
-/* Bottom row (controls) */
-.controls-row {
-    display: flex;
+    display: none; /* hidden on desktop */
     justify-content: center;
     align-items: center;
     gap: 12px;
-    background: #2c3e50;
+    background: #1e2a38;
     padding: 12px 20px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     width: fit-content;
 }
 
-/* Make Power/Score look consistent */
-.ui-row .power,
-.ui-row .score {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 6px 12px;
-    border-radius: 8px;
+/* =======================
+   BUTTONS
+======================= */
+.control-btn {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.2rem;
     font-weight: bold;
-    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* States */
+.control-btn:hover {
+    transform: translateY(-2px);
+}
+
+.control-btn:active {
+    transform: translateY(1px);
 }
 
 /* Specific colors */
-#desktop-btn {
-    background: #8e44ad;
-}
-
-/* purple */
-#mobile-btn {
-    background: #9b59b6;
-}
-
-/* purple slightly different */
-
-#play-btn {
+.control-btn.play {
     background: #f39c12;
-}
-
-/* orange */
-#pause-btn {
+} /* orange */
+.control-btn.pause {
     background: #e74c3c;
-}
-
-/* red */
-
-#on-btn {
+} /* red */
+.control-btn.guide {
+    background: #8e44ad;
+} /* purple */
+.control-btn.volume {
     background: #27ae60;
-}
-
-/* green */
-#off-btn {
+} /* green */
+.control-btn.volume.muted {
     background: #c0392b;
-}
+} /* muted red */
+.control-btn.left {
+    background: #3498db;
+} /* blue */
+.control-btn.right {
+    background: #2ecc71;
+} /* green */
+.control-btn.up {
+    background: #f1c40f;
+} /* yellow */
 
-/* muted red */
+/* =======================
+   RESPONSIVE
+======================= */
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .ui-row {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .ui-row .power,
+    .ui-row .score {
+        font-size: 0.9rem;
+        padding: 4px 8px;
+    }
+
+    .controls-row {
+        display: flex; /* show on mobile */
+    }
+
+    .control-btn {
+        width: 14vw;
+        height: 14vw;
+        max-width: 70px;
+        max-height: 70px;
+    }
+}
 
 /* Smooth show/hide */
 .hidden {
     display: none !important;
 }
 
+/* Desktop hides mobile controls */
+@media (min-width: 769px) {
+    .controls-row {
+        display: none;
+    }
+}
+
 /* =======================
-   GAME CONTROLS
+   MODAL STYLING
 ======================= */
-#controls-card {
-    background: #2c3e50;
-    padding: 15px;
-    border-radius: 14px;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-    margin-top: 15px;
-}
-
-.control-btn.left {
-    background: #3498db;
-    /* blue */
-}
-
-.control-btn.right {
-    background: #2ecc71;
-    /* green */
-}
-
-.control-btn.play {
-    background: #f39c12;
-    /* orange */
-}
-
-.control-btn.pause {
-    background: #e74c3c;
-    /* red */
-}
-
-.control-btn.guide {
-    background: #9b59b6;
-    /* purple */
-}
-
-.control-btn.fullscreen {
-    background: #8e44ad;
-    /* purple */
-}
-
-.control-btn.speed {
-    background: #f1c40f;
-    /* yellow */
-}
-
-/* Volume button distinct style */
-.control-btn.volume {
-    background: #1abc9c;
-    /* teal for unmuted */
-    transition: all 0.3s ease;
-}
-
-.control-btn.volume.muted {
-    background: #c0392b;
-    /* darker red for muted */
-}
-
-/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -296,6 +215,7 @@ body {
     width: 80%;
     max-width: 400px;
     color: white;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
 }
 
 .close {
@@ -304,75 +224,12 @@ body {
     cursor: pointer;
 }
 
-.guide-card {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 6px;
-    font-size: 16px;
-}
-
-.guide-card.blue {
-    background: #3498db;
-}
-
-.guide-card.green {
-    background: #2ecc71;
-}
-
-.guide-card.red {
-    background: #e74c3c;
-}
-
-.control-btn {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.7), inset -2px -2px 5px rgba(0, 0, 0, 0.3),
-        3px 3px 8px rgba(0, 0, 0, 0.2);
-    font-size: 1.2rem;
-    color: #333;
-    font-weight: bold;
-}
-
-.control-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.8), inset -2px -2px 5px rgba(0, 0, 0, 0.4),
-        5px 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.control-btn:active {
-    transform: translateY(0);
-    box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.3), inset -1px -1px 3px rgba(255, 255, 255, 0.5),
-        1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-
 .controls-title {
     color: #4a90e2;
     font-size: 1.5rem;
     margin-bottom: 20px;
     text-align: center;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Mobile Guide */
-.mobile-guide {
-    margin-top: 30px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 12px;
-    padding: 25px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-}
-
-.mobile-title {
-    color: #ff6b6b;
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: bold;
 }
 
 .control-item {
@@ -416,39 +273,6 @@ body {
     margin-top: 3px;
 }
 
-/* Touch Controls */
-.touch-controls {
-    margin-top: 25px;
-    padding: 20px;
-    background: rgba(255, 193, 7, 0.1);
-    border-radius: 10px;
-    border: 2px solid rgba(255, 193, 7, 0.3);
-}
-
-.touch-title {
-    color: #ffc107;
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    text-align: center;
-    font-weight: bold;
-}
-
-.touch-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 6px;
-}
-
-.touch-icon {
-    font-size: 1.5rem;
-    margin-right: 12px;
-    width: 30px;
-    text-align: center;
-}
-
 .game-info {
     text-align: center;
     margin-top: 25px;
@@ -464,17 +288,42 @@ body {
     font-weight: bold;
 }
 
-.rotate-icon {
-    font-size: 2rem;
-    color: #ffc107;
-    animation: rotate 2s linear infinite;
+/* 📱 Mobile optimization */
+@media (max-width: 600px) {
+    /* Top UI panel */
+    #ui.ui-row {
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px 10px;
+        width: 95%;
+        max-width: 100%;
+    }
+
+    /* Power / Score text smaller */
+    #ui .power,
+    #ui .score {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+    }
+
+    /* Buttons smaller */
+    .control-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
 }
 
-.speed-icon {
-    font-size: 1.5rem;
-    color: #ffc107;
-}
+/* 📱 Extra small screens */
+@media (max-width: 400px) {
+    #ui .power,
+    #ui .score {
+        font-size: 0.75rem;
+    }
 
-.speed-icon.fast {
-    transform: rotate(45deg);
+    .control-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
 }

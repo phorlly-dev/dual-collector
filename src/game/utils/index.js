@@ -1,5 +1,6 @@
 import Instances from "../consts";
 import Colors from "../consts/colors";
+import Helpers from "./helper";
 
 const Bases = {
     text: ({ scene, y = 0, text, style = {}, isVisible = true }) => {
@@ -74,7 +75,7 @@ const Bases = {
         stroke = Colors.success,
         strokeThickness = 3,
         velocityY = 120,
-        radius = 12,
+        radius = 16,
         width = 60,
         height = 60,
     }) => {
@@ -110,6 +111,23 @@ const Bases = {
         box.textObj = text;
 
         return box;
+    },
+    moveLeft: (scene) => {
+        scene.player.setVelocityX(-160);
+        scene.player.anims.play("left", true);
+        Helpers.playIfNotPlaying(scene.walk);
+    },
+    moveRight: (scene) => {
+        scene.player.setVelocityX(160);
+        scene.player.anims.play("right", true);
+        Helpers.playIfNotPlaying(scene.walk);
+    },
+    jump: (scene) => scene.player.setVelocityY(-330),
+    fallback: (scene) => scene.player.setVelocityY(Instances.game.height),
+    stop: (scene) => {
+        scene.player.setVelocityX(0);
+        scene.player.anims.play("turn");
+        Helpers.stopIfPlaying(scene.walk);
     },
 };
 
