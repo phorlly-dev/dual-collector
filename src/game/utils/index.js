@@ -3,7 +3,7 @@ import Colors from "../consts/colors";
 import Helpers from "./helper";
 
 const Bases = {
-    text: ({ scene, y = 0, text, style = {}, isVisible = true }) => {
+    text({ scene, y = 0, text, style = {}, isVisible = true }) {
         const sty = {
             fontFamily: "Arial",
             fontSize: Math.max(12, Instances.game.width / 30),
@@ -21,7 +21,7 @@ const Bases = {
             .setOrigin(0.5)
             .setVisible(isVisible);
     },
-    flashScreen: ({ scene, color, alpha }) => {
+    flashScreen({ scene, color, alpha }) {
         const flash = scene.add.rectangle(
             Instances.game.width / 2,
             Instances.game.height / 2,
@@ -30,14 +30,14 @@ const Bases = {
             color,
             alpha
         );
-        scene.tweens.add({
+        return scene.tweens.add({
             targets: flash,
             alpha: 0,
             duration: 250,
             onComplete: () => flash.destroy(),
         });
     },
-    particle: ({ scene, x, y, options = {} }) => {
+    particle({ scene, x, y, options = {} }) {
         const opt = {
             speed: { min: 50, max: 150 },
             scale: { start: 0.5, end: 0 },
@@ -53,16 +53,22 @@ const Bases = {
 
         return scene.time.delayedCall(700, () => particles.destroy());
     },
-    getById: (id) => document.getElementById(id),
-    exponentFromValue: (value) => {
+    getById(id) {
+        return document.getElementById(id);
+    },
+    exponentFromValue(value) {
         const exp = Math.log2(value);
 
         return Number.isInteger(exp) ? exp : value;
     },
-    powersOf2: (value) => Math.pow(2, value),
+    powersOf2(value) {
+        return Math.pow(2, value);
+    },
 
-    isMobile: () => /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768,
-    textBox: ({
+    isMobile() {
+        return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
+    },
+    textBox({
         scene,
         x,
         y,
@@ -78,7 +84,7 @@ const Bases = {
         radius = 16,
         width = 60,
         height = 60,
-    }) => {
+    }) {
         // === Draw box centered ===
         const box = scene.add.graphics();
         box.fillStyle(bg, 1);
@@ -112,19 +118,23 @@ const Bases = {
 
         return box;
     },
-    moveLeft: (scene) => {
+    moveLeft(scene) {
         scene.player.setVelocityX(-160);
         scene.player.anims.play("left", true);
         Helpers.playIfNotPlaying(scene.walk);
     },
-    moveRight: (scene) => {
+    moveRight(scene) {
         scene.player.setVelocityX(160);
         scene.player.anims.play("right", true);
         Helpers.playIfNotPlaying(scene.walk);
     },
-    jump: (scene) => scene.player.setVelocityY(-330),
-    fallback: (scene) => scene.player.setVelocityY(Instances.game.height),
-    stop: (scene) => {
+    jump(scene) {
+        return scene.player.setVelocityY(-330);
+    },
+    fallback(scene) {
+        return scene.player.setVelocityY(Instances.game.height);
+    },
+    stop(scene) {
         scene.player.setVelocityX(0);
         scene.player.anims.play("turn");
         Helpers.stopIfPlaying(scene.walk);

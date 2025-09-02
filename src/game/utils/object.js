@@ -3,7 +3,7 @@ import Instances from "../consts";
 import Colors from "../consts/colors";
 
 const Objects = {
-    player: (scene, scale = 1.8) => {
+    player(scene, scale = 1.8) {
         const player = scene.physics.add
             .sprite(Instances.game.width / 2, Instances.game.height, Instances.image.key.player)
             .setBounce(0.2)
@@ -13,28 +13,28 @@ const Objects = {
 
         return player;
     },
-    animations: (scene) => {
-        scene.anims.create({
+    animations(scene) {
+        const turnLeft = scene.anims.create({
             key: "left",
             frames: scene.anims.generateFrameNumbers(Instances.image.key.player, { start: 0, end: 3 }),
             frameRate: 16,
             repeat: -1,
         });
-
-        scene.anims.create({
-            key: "turn",
-            frames: [{ key: Instances.image.key.player, frame: 4 }],
-            frameRate: 20,
-        });
-
-        scene.anims.create({
+        const turnRight = scene.anims.create({
             key: "right",
             frames: scene.anims.generateFrameNumbers(Instances.image.key.player, { start: 5, end: 8 }),
             frameRate: 16,
             repeat: -1,
         });
+        const turnFace = scene.anims.create({
+            key: "turn",
+            frames: [{ key: Instances.image.key.player, frame: 4 }],
+            frameRate: 20,
+        });
+
+        return { turnLeft, turnRight, turnFace };
     },
-    bomb: ({ scene, x, y }) => {
+    bomb({ scene, x, y }) {
         const bomb = scene.physics.add.sprite(x, y, Instances.image.key.bomb).setScale(0.1);
         scene.bombBoxes.add(bomb);
         bomb.x = x;
@@ -46,11 +46,11 @@ const Objects = {
 
         return bomb;
     },
-    score: ({ scene, x, y, fontSize, strokeThickness }) => {
+    score({ scene, x, y, fontSize, strokeThickness }) {
         const operator = Phaser.Math.RND.pick(["+", "-"]);
         const value = operator === "+" ? Phaser.Math.Between(50, 500) : Phaser.Math.Between(25, 250);
 
-        Bases.textBox({
+        return Bases.textBox({
             scene,
             x,
             y,
@@ -61,7 +61,7 @@ const Objects = {
             strokeThickness,
         });
     },
-    power: ({ scene, x, y, fontSize, strokeThickness }) => {
+    power({ scene, x, y, fontSize, strokeThickness }) {
         let { value, width } = 60;
         const operator = Phaser.Math.RND.pick(["x", "/"]);
         if (operator === "x") {
@@ -71,7 +71,7 @@ const Objects = {
             value = Phaser.Math.Between(2, 4);
         }
 
-        Bases.textBox({
+        return Bases.textBox({
             scene,
             x,
             y,
@@ -85,8 +85,8 @@ const Objects = {
             stroke: Colors.primary,
         });
     },
-    boxes: (element) => {
-        element.children.entries.forEach((box) => {
+    boxes(element) {
+        return element.children.entries.forEach((box) => {
             if (box.textObj) {
                 box.textObj.x = box.x;
                 box.textObj.y = box.y;
@@ -98,16 +98,16 @@ const Objects = {
             }
         });
     },
-    bindButtons: ({ scene, elements, keys }) => {
-        elements.forEach((el, i) => {
+    bindButtons({ scene, elements, keys }) {
+        return elements.forEach((el, i) => {
             const key = keys[i]; // match button to key by index
             ["pointerdown", "pointerup", "pointerout"].forEach((ev) => {
                 el.addEventListener(ev, () => (scene[key] = ev === "pointerdown"));
             });
         });
     },
-    bindToggleButtons: ({ scene, elements, callback }) => {
-        elements.forEach((el) => el.addEventListener("pointerdown", () => callback(scene)));
+    bindToggleButtons({ scene, elements, callback }) {
+        return elements.forEach((el) => el.addEventListener("pointerdown", () => callback(scene)));
     },
 };
 

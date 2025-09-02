@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Power & Score</title>
 </head>
 
@@ -20,14 +21,26 @@
                 <div class="score">💯 Score: <span id="score">0</span></div>
             </div>
             <div class="actions">
-                <button id="desktop-btn" class="control-btn guide">💻</button>
-                <button id="mobile-btn" class="control-btn guide">📱</button>
+                <button id="desktop-btn" class="control-btn guide">
+                    <i class="fa fa-desktop" aria-hidden="true"></i>
+                </button>
+                <button id="mobile-btn" class="control-btn guide">
+                    <i class="fa fa-mobile-phone" aria-hidden="true" style="font-size:24px"></i>
+                </button>
 
-                <button id="pause-btn" class="control-btn pause"><i class="fa fa-pause"></i></button>
-                <button id="play-btn" class="control-btn hidden play"><i class="fa fa-play"></i></button>
+                <button id="pause-btn" class="control-btn pause">
+                    <i class="fa fa-pause" aria-hidden="true"></i>
+                </button>
+                <button id="play-btn" class="control-btn hidden play">
+                    <i class="fa fa-play" aria-hidden="true"></i>
+                </button>
 
-                <button id="on-btn" class="control-btn volume"><i class="fa fa-volume-up"></i></button>
-                <button id="off-btn" class="control-btn volume muted hidden"><i class="fa fa-volume-mute"></i></button>
+                <button id="on-btn" class="control-btn volume">
+                    <i class="fa fa-volume-up" aria-hidden="true"></i>
+                </button>
+                <button id="off-btn" class="control-btn volume muted hidden">
+                    <i class="fa fa-volume-mute" aria-hidden="true"></i>
+                </button>
             </div>
         </div>
 

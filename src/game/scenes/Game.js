@@ -1,12 +1,11 @@
 import Instances from "../consts";
-import Colors from "../consts/colors.js";
 import spawnBoxes from "../utils/box-factory";
-import Controls from "../utils/control.js";
-import Effects from "../utils/effect.js";
-import Helpers from "../utils/helper.js";
+import Controls from "../utils/control";
+import Effects from "../utils/effect";
+import Helpers from "../utils/helper";
 import Bases from "../utils";
-import Objects from "../utils/object.js";
-import States from "../utils/state.js";
+import Objects from "../utils/object";
+import States from "../utils/state";
 
 class Game extends Phaser.Scene {
     constructor() {
@@ -22,7 +21,6 @@ class Game extends Phaser.Scene {
     create() {
         Helpers.show({ id: Instances.control.ui });
         this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).alpha = 0.3;
-        this.sound.play(Instances.audio.key.playing, { loop: true, volume: 0.5 });
 
         this.player = Objects.player(this);
         Objects.animations(this);
@@ -51,6 +49,7 @@ class Game extends Phaser.Scene {
         Controls.buttons(this);
 
         this.walk = this.sound.add(Instances.audio.key.walk, { loop: true, volume: 0.8 });
+        this.sound.play(Instances.audio.key.playing, { loop: true, volume: 0.5 });
     }
 
     update() {

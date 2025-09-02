@@ -15,8 +15,15 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).alpha = 0.8;
-        this.add.image(Instances.game.width / 2, Instances.game.height / 2 - 100, Instances.image.key.logo);
+        const bg = this.add
+            .image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg)
+            .setAlpha(0.8);
+
+        const logo = this.add.image(
+            Instances.game.width / 2,
+            Instances.game.height / 2 - 100,
+            Instances.image.key.logo
+        );
 
         this.label = Bases.text({
             scene: this,
@@ -29,6 +36,9 @@ class Menu extends Phaser.Scene {
             scene: this,
             keys: ["keydown-SPACE", "pointerdown"],
             callback: () => {
+                bg.destroy();
+                logo.destroy();
+                this.label.destroy();
                 this.scene.start(Instances.game.start);
                 Helpers.playSound(this, Instances.audio.key.start);
             },

@@ -16,83 +16,48 @@ class Preloader extends Phaser.Scene {
         progressBox.lineStyle(2, 0xffffff, 1);
         progressBox.strokeRoundedRect(Instances.game.width / 2 - 230, Instances.game.height / 2 - 14, 460, 28, 8);
 
-        // Progress bar setup
+        // progress bar (filled rounded rect)
         const progressBar = this.add.graphics();
-        const progressText = this.add
-            .text(Instances.game.width / 2, Instances.game.height / 2 + 40, "Loading: 0%", {
+
+        // text
+        const progressText = Bases.text({
+            scene: this,
+            y: 50,
+            text: "Loading: 0%",
+            style: {
                 fontSize: "20px",
-                fill: "#fff",
-            })
-            .setOrigin(0.5);
-
-        let realProgress = 0; // Phaser loader progress (0 → 1)
-        let displayProgress = 0; // Smoothed value for animation
-
-        // Listen for real loading progress
-        this.load.on("progress", (value) => {
-            realProgress = value;
+                fill: Colors.secondary,
+            },
         });
 
-        // Smooth update each frame
-        this.events.on("update", () => {
-            // Approach real progress gradually
-            displayProgress += (realProgress - displayProgress) * 0.05;
+        this.fakeProgress = 0;
+        this.speed = 1500;
 
-            // Draw bar
-            progressBar.clear();
-            progressBar.fillStyle(Colors.orange, 1);
-            progressBar.fillRoundedRect(
-                Instances.game.width / 2 - 230,
-                Instances.game.height / 2 - 14,
-                460 * displayProgress,
-                28,
-                8
-            );
-
-            progressText.setText("Loading: " + Math.floor(displayProgress * 100) + "%");
+        // listen for loader progress
+        this.load.on("progress", (progress) => {
+            // tweened smooth progress
+            this.tweens.add({
+                targets: this,
+                fakeProgress: progress,
+                duration: this.speed,
+                ease: "Linear",
+                onUpdate: () => {
+                    progressBar.clear();
+                    progressBar.fillStyle(Colors.orange, 1);
+                    progressBar.fillRoundedRect(
+                        Instances.game.width / 2 - 230,
+                        Instances.game.height / 2 - 14,
+                        460 * this.fakeProgress,
+                        28,
+                        8
+                    );
+                    progressText.setText(`Loading: ${Math.round(this.fakeProgress * 100)}%`);
+                },
+            });
         });
-
-        // // progress bar (filled rounded rect)
-        // const progressBar = this.add.graphics();
-
-        // // text
-        // const progressText = Bases.text({
-        //     scene: this,
-        //     y: 50,
-        //     text: "Loading: 0%",
-        //     style: {
-        //         fontSize: "20px",
-        //         fill: Colors.secondary,
-        //     },
-        // });
-
-        // this.fakeProgress = 0;
-        // this.speed = 1500;
-
-        // // listen for loader progress
-        // this.load.on("progress", (value) => {
-        //     // tweened smooth progress
-        //     this.tweens.add({
-        //         targets: this,
-        //         // fakeProgress: progress,
-        //         duration: this.speed,
-        //         ease: "Linear",
-        //         onUpdate: () => {
-        //             progressBar.clear();
-        //             progressBar.fillStyle(Colors.orange, 1);
-        //             progressBar.fillRoundedRect(
-        //                 Instances.game.width / 2 - 230,
-        //                 Instances.game.height / 2 - 14,
-        //                 460 * value,
-        //                 28,
-        //                 8
-        //             );
-        //             progressText.setText(`Loading: ${Math.floor(value * 100)}%`);
-        //         },
-        //     });
-        // });
 
         // load assets here
+        this.load.setPath("assets");
         this.load.image(Instances.image.key.logo, Instances.image.value.logo);
         this.load.image(Instances.image.key.bomb, Instances.image.value.bomb);
         this.load.spritesheet(Instances.image.key.player, Instances.image.value.player, {
@@ -114,7 +79,7 @@ class Preloader extends Phaser.Scene {
     create() {
         // When complete → ensure progress bar finishes
         this.load.once("complete", () => {
-            this.time.delayedCall(500, () => {
+            this.time.delayedCall(this.speed, () => {
                 this.scene.start(Instances.game.menu);
             });
         });

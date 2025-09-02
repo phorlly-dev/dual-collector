@@ -6,6 +6,7 @@ class Boot extends Phaser.Scene {
     }
 
     preload() {
+        this.load.setPath("assets");
         this.load.image(Instances.image.key.bg, Instances.image.value.bg);
     }
 

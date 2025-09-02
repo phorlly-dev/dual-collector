@@ -4,7 +4,7 @@ import Colors from "../consts/colors";
 import Helpers from "./helper";
 
 const States = {
-    ui: (scene) => {
+    ui(scene) {
         scene.pauseText = Bases.text({
             scene,
             y: -80,
@@ -27,8 +27,13 @@ const States = {
             },
             isVisible: false,
         });
+
+        return {
+            pauseText: scene.pauseText,
+            pauseInstructions: scene.pauseInstructions,
+        };
     },
-    getSoundKey: (operation) => {
+    getSoundKey(operation) {
         switch (operation) {
             case "x":
                 return Instances.audio.key.power;
@@ -42,7 +47,7 @@ const States = {
                 return Instances.audio.key.effect;
         }
     },
-    togglePause: (scene) => {
+    togglePause(scene) {
         scene.isPaused = !scene.isPaused;
 
         if (scene.isPaused) {
@@ -67,7 +72,7 @@ const States = {
             Helpers.playSound(scene, Instances.audio.key.start);
         }
     },
-    textPopup: ({ scene, x, y, changeText, resultText, color }) => {
+    textPopup({ scene, x, y, changeText, resultText, color }) {
         const popup = scene.add
             .text(x, y - 30, changeText, {
                 fontSize: "20px",
@@ -86,7 +91,7 @@ const States = {
             })
             .setOrigin(0.5);
 
-        scene.tweens.add({
+        return scene.tweens.add({
             targets: [popup, result],
             y: y - 80,
             alpha: 0,

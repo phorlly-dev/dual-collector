@@ -1,12 +1,11 @@
 import Bases from ".";
 import Instances from "../consts";
-import Colors from "../consts/colors";
 import Helpers from "./helper";
 import Objects from "./object";
 import States from "./state";
 
 const Controls = {
-    buttons: (scene) => {
+    buttons(scene) {
         //Element state
         scene.leftBtn = Bases.getById(Instances.control.left);
         scene.rightBtn = Bases.getById(Instances.control.right);
@@ -21,9 +20,13 @@ const Controls = {
             keys: ["isLeft", "isRight", "isJump"],
         });
 
-        Objects.bindToggleButtons({ scene, elements: [scene.pauseBtn, scene.playBtn], callback: States.togglePause });
+        Objects.bindToggleButtons({
+            scene,
+            elements: [scene.pauseBtn, scene.playBtn],
+            callback: (scene) => States.togglePause(scene),
+        });
     },
-    actions: (scene) => {
+    actions(scene) {
         // Left movement
         if (scene.cursors.left.isDown || scene.as.A.isDown || scene.isLeft) Bases.moveLeft(scene);
         // Right movement
@@ -34,7 +37,7 @@ const Controls = {
         // Jump
         scene.cursors.space.isDown || scene.isJump ? Bases.jump(scene) : Bases.fallback(scene);
     },
-    toggleMute: (scene) => {
+    toggleMute(scene) {
         // In your scene create/init
         const onBtn = Bases.getById(Instances.control.on);
         const offBtn = Bases.getById(Instances.control.off);
@@ -56,12 +59,12 @@ const Controls = {
             Helpers.hide({ element: offBtn });
         });
     },
-    toggleControls: (isMobile) => {
+    toggleControls(isMobile) {
         const controls = Bases.getById(Instances.control.card);
         if (isMobile) {
-            Helpers.show({ element: controls });
+            return Helpers.show({ element: controls });
         } else {
-            Helpers.hide({ element: controls });
+            return Helpers.hide({ element: controls });
         }
     },
 };
