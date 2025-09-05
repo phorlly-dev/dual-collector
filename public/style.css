@@ -30,9 +30,9 @@ body {
     gap: 15px;
     width: 100%;
     max-width: 900px; /* center limit */
-    padding: 24px;
+    padding: 20px;
     height: auto; /* adjust to content */
-    margin: 16px;
+    margin: 12px;
     border-radius: 20px;
     box-sizing: border-box;
     background: linear-gradient(135deg, #997c7cff 0%, #405677ff 100%);
@@ -187,7 +187,8 @@ body {
 }
 
 /* Desktop hides mobile controls */
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
+    /* hide only for big desktops */
     .controls-row {
         display: none;
     }
