@@ -14,10 +14,10 @@ class GameOver extends Phaser.Scene {
             Helpers.hide({ id: data.ui });
         }
 
-        this.cameras.main.setBackgroundColor(Colors.secondary);
+        const bg = this.cameras.main.setBackgroundColor(Colors.secondary);
 
         const fontSize = Instances.game.width / 10;
-        Bases.text({
+        const title = Bases.text({
             scene: this,
             y: -120,
             text: "GAME OVER!",
@@ -28,7 +28,7 @@ class GameOver extends Phaser.Scene {
                 color: Colors.error,
             },
         });
-        Bases.text({
+        const score = Bases.text({
             scene: this,
             y: -12,
             text: `Final Score: ${data.score}`,
@@ -54,6 +54,10 @@ class GameOver extends Phaser.Scene {
             scene: this,
             keys: ["keydown-SPACE", "pointerdown"],
             callback: () => {
+                bg.destroy();
+                title.destroy();
+                score.destroy();
+                this.label.destroy();
                 this.scene.start(Instances.game.start);
                 Helpers.playSound(this, Instances.audio.key.start);
             },

@@ -186,14 +186,6 @@ body {
     display: none !important;
 }
 
-/* Desktop hides mobile controls */
-@media (min-width: 1025px) {
-    /* hide only for big desktops */
-    .controls-row {
-        display: none;
-    }
-}
-
 /* =======================
    MODAL STYLING
 ======================= */

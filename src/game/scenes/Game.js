@@ -44,7 +44,7 @@ class Game extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.bombBoxes, this.hitBomb, null, this);
 
         // const isMobile = this.sys.game.device.input.touch;
-        Controls.toggleControls(true);
+        Controls.toggleControls(Bases.isMobile());
         States.ui(this);
         Controls.buttons(this);
 
