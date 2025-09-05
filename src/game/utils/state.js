@@ -98,6 +98,17 @@ const States = {
             },
         });
     },
+    isTouchOrTablet() {
+        const ua = navigator.userAgent.toLowerCase();
+
+        const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+
+        const isTabletUA = /ipad|android(?!.*mobile)|tablet/.test(ua);
+
+        const isSmallScreen = window.innerWidth <= 1280; // treat tablets as touch devices
+
+        return hasTouch && (isTabletUA || isSmallScreen);
+    },
 };
 
 export default States;
