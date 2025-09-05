@@ -30,7 +30,7 @@ const Bases = {
             color,
             alpha
         );
-        return scene.tweens.add({
+        scene.tweens.add({
             targets: flash,
             alpha: 0,
             duration: 250,
@@ -51,7 +51,7 @@ const Bases = {
             ...options,
         });
 
-        return scene.time.delayedCall(700, () => particles.destroy());
+        scene.time.delayedCall(700, () => particles.destroy());
     },
     getById(id) {
         return document.getElementById(id);
@@ -129,10 +129,10 @@ const Bases = {
         Helpers.playIfNotPlaying(scene.walk);
     },
     jump(scene) {
-        return scene.player.setVelocityY(-330);
+        scene.player.setVelocityY(-330);
     },
     fallback(scene) {
-        return scene.player.setVelocityY(Instances.game.height);
+        scene.player.setVelocityY(Instances.game.height);
     },
     stop(scene) {
         scene.player.setVelocityX(0);

@@ -9,11 +9,6 @@ class Menu extends Phaser.Scene {
         super(Instances.game.menu);
     }
 
-    init() {
-        Helpers.hide({ id: Instances.control.ui });
-        Controls.toggleMute(this.game.scene.keys[Instances.game.start]);
-    }
-
     create() {
         const bg = this.add
             .image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg)

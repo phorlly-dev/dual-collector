@@ -14,25 +14,23 @@ const Objects = {
         return player;
     },
     animations(scene) {
-        const turnLeft = scene.anims.create({
+        scene.anims.create({
             key: "left",
             frames: scene.anims.generateFrameNumbers(Instances.image.key.player, { start: 0, end: 3 }),
             frameRate: 16,
             repeat: -1,
         });
-        const turnRight = scene.anims.create({
+        scene.anims.create({
             key: "right",
             frames: scene.anims.generateFrameNumbers(Instances.image.key.player, { start: 5, end: 8 }),
             frameRate: 16,
             repeat: -1,
         });
-        const turnFace = scene.anims.create({
+        scene.anims.create({
             key: "turn",
             frames: [{ key: Instances.image.key.player, frame: 4 }],
             frameRate: 20,
         });
-
-        return { turnLeft, turnRight, turnFace };
     },
     bomb({ scene, x, y }) {
         const bomb = scene.physics.add.sprite(x, y, Instances.image.key.bomb).setScale(0.1);
@@ -50,7 +48,7 @@ const Objects = {
         const operator = Phaser.Math.RND.pick(["+", "-"]);
         const value = operator === "+" ? Phaser.Math.Between(50, 500) : Phaser.Math.Between(25, 250);
 
-        return Bases.textBox({
+        Bases.textBox({
             scene,
             x,
             y,
@@ -71,7 +69,7 @@ const Objects = {
             value = Phaser.Math.Between(2, 4);
         }
 
-        return Bases.textBox({
+        Bases.textBox({
             scene,
             x,
             y,
@@ -86,7 +84,7 @@ const Objects = {
         });
     },
     boxes(element) {
-        return element.children.entries.forEach((box) => {
+        element.children.entries.forEach((box) => {
             if (box.textObj) {
                 box.textObj.x = box.x;
                 box.textObj.y = box.y;
@@ -99,7 +97,7 @@ const Objects = {
         });
     },
     bindButtons({ scene, elements, keys }) {
-        return elements.forEach((el, i) => {
+        elements.forEach((el, i) => {
             const key = keys[i]; // match button to key by index
             ["pointerdown", "pointerup", "pointerout"].forEach((ev) => {
                 el.addEventListener(ev, () => (scene[key] = ev === "pointerdown"));
@@ -107,7 +105,7 @@ const Objects = {
         });
     },
     bindToggleButtons({ scene, elements, callback }) {
-        return elements.forEach((el) => el.addEventListener("pointerdown", () => callback(scene)));
+        elements.forEach((el) => el.addEventListener("pointerdown", () => callback(scene)));
     },
 };
 

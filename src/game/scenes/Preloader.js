@@ -9,12 +9,19 @@ class Preloader extends Phaser.Scene {
 
     preload() {
         // background
-        this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).alpha = 0.8;
+        this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).setAlpha(0.6);
+
+        // sizes
+        const barWidth = 460;
+        const barHeight = 28;
+        const radius = 12;
+        const barX = Instances.game.width / 2 - barWidth / 2;
+        const barY = Instances.game.height / 2;
 
         // progress container (outline with rounded corners)
         const progressBox = this.add.graphics();
         progressBox.lineStyle(2, 0xffffff, 1);
-        progressBox.strokeRoundedRect(Instances.game.width / 2 - 230, Instances.game.height / 2 - 14, 460, 28, 8);
+        progressBox.strokeRoundedRect(barX, barY, barWidth, barHeight, radius);
 
         // progress bar (filled rounded rect)
         const progressBar = this.add.graphics();
@@ -31,7 +38,7 @@ class Preloader extends Phaser.Scene {
         });
 
         this.fakeProgress = 0;
-        this.speed = 1500;
+        this.speed = 800;
 
         // listen for loader progress
         this.load.on("progress", (progress) => {
@@ -44,13 +51,7 @@ class Preloader extends Phaser.Scene {
                 onUpdate: () => {
                     progressBar.clear();
                     progressBar.fillStyle(Colors.orange, 1);
-                    progressBar.fillRoundedRect(
-                        Instances.game.width / 2 - 230,
-                        Instances.game.height / 2 - 14,
-                        460 * this.fakeProgress,
-                        28,
-                        8
-                    );
+                    progressBar.fillRoundedRect(barX, barY, barWidth * this.fakeProgress, barHeight, radius);
                     progressText.setText(`Loading: ${Math.round(this.fakeProgress * 100)}%`);
                 },
             });

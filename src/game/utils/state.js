@@ -27,11 +27,6 @@ const States = {
             },
             isVisible: false,
         });
-
-        return {
-            pauseText: scene.pauseText,
-            pauseInstructions: scene.pauseInstructions,
-        };
     },
     getSoundKey(operation) {
         switch (operation) {
@@ -91,7 +86,7 @@ const States = {
             })
             .setOrigin(0.5);
 
-        return scene.tweens.add({
+        scene.tweens.add({
             targets: [popup, result],
             y: y - 80,
             alpha: 0,

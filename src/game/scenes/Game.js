@@ -20,7 +20,7 @@ class Game extends Phaser.Scene {
 
     create() {
         Helpers.show({ id: Instances.control.ui });
-        this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).alpha = 0.3;
+        this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).setAlpha(0.4);
 
         this.player = Objects.player(this);
         Objects.animations(this);
@@ -50,6 +50,7 @@ class Game extends Phaser.Scene {
 
         this.walk = this.sound.add(Instances.audio.key.walk, { loop: true, volume: 0.8 });
         this.sound.play(Instances.audio.key.playing, { loop: true, volume: 0.5 });
+        Controls.toggleMute(this.game.scene.keys[Instances.game.start]);
     }
 
     update() {
@@ -77,7 +78,7 @@ class Game extends Phaser.Scene {
     }
 
     // ... keep update, collectPowerBox, collectScoreBox (but now they call imported effects)
-    collectPowerBox(player, powerBox) {
+    collectPowerBox(_player, powerBox) {
         if (powerBox.operation === "x") {
             this.power += Bases.exponentFromValue(powerBox.value) * 10;
         } else if (powerBox.operation === "/") {
@@ -100,7 +101,7 @@ class Game extends Phaser.Scene {
         powerBox.destroy();
     }
 
-    collectScoreBox(player, scoreBox) {
+    collectScoreBox(_player, scoreBox) {
         if (scoreBox.operation === "+") {
             this.score += scoreBox.value;
         } else if (scoreBox.operation === "-") {
@@ -123,7 +124,7 @@ class Game extends Phaser.Scene {
         scoreBox.destroy();
     }
 
-    hitBomb(player, bomb) {
+    hitBomb(_player, bomb) {
         // Power instantly goes to 0
         this.power = 0;
         Helpers.setPower(this.power);
