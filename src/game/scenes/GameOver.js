@@ -10,11 +10,10 @@ class GameOver extends Phaser.Scene {
 
     create(data) {
         if (data.ui && data.control) {
-            Helpers.hide({ id: data.control });
-            Helpers.hide({ id: data.ui });
+            Helpers.hidden([data.ui, data.control]);
         }
 
-        const bg = this.cameras.main.setBackgroundColor(Colors.secondary);
+        const bg = this.cameras.main.setBackgroundColor(Colors.success.css);
 
         const fontSize = Instances.game.width / 10;
         const title = Bases.text({
@@ -24,8 +23,9 @@ class GameOver extends Phaser.Scene {
             style: {
                 fontFamily: "Arial Black",
                 fontSize: fontSize,
-                stroke: Colors.primary,
-                color: Colors.error,
+                stroke: Colors.primary.css,
+                color: Colors.error.css,
+                strokeThickness: 10,
             },
         });
         const score = Bases.text({
@@ -45,7 +45,8 @@ class GameOver extends Phaser.Scene {
             style: {
                 fontFamily: "Lucida Console",
                 fontSize: fontSize / 3,
-                color: Colors.primary,
+                color: Colors.primary.css,
+                stroke: Colors.secondary.css,
                 strokeThickness: 8,
             },
         });
@@ -54,11 +55,21 @@ class GameOver extends Phaser.Scene {
             scene: this,
             keys: ["keydown-SPACE", "pointerdown"],
             callback: () => {
+                // destroy texts
                 bg.destroy();
                 title.destroy();
                 score.destroy();
                 this.label.destroy();
+
+                // stop GameOver scene
+                this.scene.stop();
+
+                // stop and reset Game scene
+                this.scene.stop(Instances.game.start);
+
+                // start fresh with unpaused state
                 this.scene.start(Instances.game.start);
+
                 Helpers.playSound(this, Instances.audio.key.start);
             },
         });

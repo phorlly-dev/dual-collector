@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="./favicon.png" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -12,12 +14,12 @@
 </head>
 
 <body>
-    <div id="game-container">
+    <div class="game-container">
         <!-- Row 1: UI -->
         <div id="ui" class="ui-row hidden">
             <div class="status">
                 <div class="power">❤️ Power: <span id="power">100</span></div>
-                —
+                <div></div>
                 <div class="score">💯 Score: <span id="score">0</span></div>
             </div>
             <div class="actions">
@@ -31,7 +33,7 @@
                 <button id="pause-btn" class="control-btn pause">
                     <i class="fa fa-pause" aria-hidden="true"></i>
                 </button>
-                <button id="play-btn" class="control-btn hidden play hidden">
+                <button id="play-btn" class="control-btn hidden play">
                     <i class="fa fa-play" aria-hidden="true"></i>
                 </button>
 
@@ -45,7 +47,7 @@
         </div>
 
         <!-- Row 2: Game -->
-        <div id="phaser-wrapper">
+        <div class="phaser-wrapper">
             <div id="phaser-game"></div>
         </div>
 

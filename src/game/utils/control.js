@@ -6,14 +6,27 @@ import States from "./state";
 
 const Controls = {
     buttons(scene) {
-        //Element state
+        // clear old listeners before binding new
+        const elements = [
+            Bases.getById(Instances.control.left),
+            Bases.getById(Instances.control.right),
+            Bases.getById(Instances.control.up),
+            Bases.getById(Instances.control.play),
+            Bases.getById(Instances.control.pause),
+        ];
+
+        elements.forEach((el) => {
+            el.replaceWith(el.cloneNode(true)); // 🔑 remove old listeners
+        });
+
+        // Re-fetch after cloning
         scene.leftBtn = Bases.getById(Instances.control.left);
         scene.rightBtn = Bases.getById(Instances.control.right);
         scene.jumpBtn = Bases.getById(Instances.control.up);
         scene.playBtn = Bases.getById(Instances.control.play);
         scene.pauseBtn = Bases.getById(Instances.control.pause);
 
-        // Events
+        // Rebind fresh listeners
         Objects.bindButtons({
             scene,
             elements: [scene.leftBtn, scene.rightBtn, scene.jumpBtn],
@@ -23,7 +36,7 @@ const Controls = {
         Objects.bindToggleButtons({
             scene,
             elements: [scene.pauseBtn, scene.playBtn],
-            callback: (scene) => States.togglePause(scene),
+            callback: States.togglePause,
         });
     },
     actions(scene) {

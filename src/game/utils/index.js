@@ -4,18 +4,18 @@ import Helpers from "./helper";
 
 const Bases = {
     text({ scene, y = 0, text, style = {}, isVisible = true }) {
-        const sty = {
+        const config = {
             fontFamily: "Arial",
             fontSize: Math.max(12, Instances.game.width / 30),
-            color: Colors.white,
-            stroke: Colors.black,
+            color: Colors.white.css,
+            stroke: Colors.black.css,
             strokeThickness: 3,
             align: "center",
         };
 
         return scene.add
             .text(Instances.game.width / 2, Instances.game.height / 2 + y, text, {
-                ...sty,
+                ...config,
                 ...style,
             })
             .setOrigin(0.5)
@@ -38,7 +38,7 @@ const Bases = {
         });
     },
     particle({ scene, x, y, options = {} }) {
-        const opt = {
+        const config = {
             speed: { min: 50, max: 150 },
             scale: { start: 0.5, end: 0 },
             lifespan: 600,
@@ -47,7 +47,7 @@ const Bases = {
             blendMode: "ADD",
         };
         const particles = scene.add.particles(x, y, "particle", {
-            ...opt,
+            ...config,
             ...options,
         });
 
@@ -75,10 +75,10 @@ const Bases = {
         element,
         operator,
         value,
-        bg = Colors.orange,
-        color = Colors.white,
+        bg = Colors.orange.hex,
+        color = Colors.white.css,
         fontSize = 24,
-        stroke = Colors.success,
+        stroke = Colors.orange.css,
         strokeThickness = 3,
         velocityY = 120,
         radius = 16,
@@ -110,6 +110,8 @@ const Bases = {
                 stroke,
                 strokeThickness,
                 align: "center",
+                resolution: window.devicePixelRatio,
+                fontFamily: "Arial Black",
             })
             .setOrigin(0.5);
 

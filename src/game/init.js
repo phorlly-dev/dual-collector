@@ -1,11 +1,11 @@
 import * as Phaser from "phaser";
 
-import Boot from "./Boot";
-import Game from "./Game";
-import GameOver from "./GameOver";
-import Menu from "./Menu";
-import Preloader from "./Preloader";
-import Instances from "../consts";
+import Boot from "./scenes/Boot";
+import Game from "./scenes/Game";
+import GameOver from "./scenes/GameOver";
+import Menu from "./scenes/Menu";
+import Preloader from "./scenes/Preloader";
+import Instances from "./consts";
 
 // Find out more information about the Game Config at:
 // https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -26,8 +26,8 @@ const config = {
         },
     },
     render: {
-        pixelArt: false, // smooth scaling
-        antialias: true, // prevent blurry text edges
+        antialias: false,
+        pixelArt: true,
     },
     scene: [Boot, Preloader, Menu, Game, GameOver],
 };

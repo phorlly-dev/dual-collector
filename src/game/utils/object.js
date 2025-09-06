@@ -14,23 +14,31 @@ const Objects = {
         return player;
     },
     animations(scene) {
-        scene.anims.create({
-            key: "left",
-            frames: scene.anims.generateFrameNumbers(Instances.image.key.player, { start: 0, end: 3 }),
-            frameRate: 16,
-            repeat: -1,
-        });
-        scene.anims.create({
-            key: "right",
-            frames: scene.anims.generateFrameNumbers(Instances.image.key.player, { start: 5, end: 8 }),
-            frameRate: 16,
-            repeat: -1,
-        });
-        scene.anims.create({
-            key: "turn",
-            frames: [{ key: Instances.image.key.player, frame: 4 }],
-            frameRate: 20,
-        });
+        if (!scene.anims.exists("left")) {
+            scene.anims.create({
+                key: "left",
+                frames: scene.anims.generateFrameNumbers(Instances.image.key.player, { start: 0, end: 3 }),
+                frameRate: 16,
+                repeat: -1,
+            });
+        }
+
+        if (!scene.anims.exists("right")) {
+            scene.anims.create({
+                key: "right",
+                frames: scene.anims.generateFrameNumbers(Instances.image.key.player, { start: 5, end: 8 }),
+                frameRate: 16,
+                repeat: -1,
+            });
+        }
+
+        if (!scene.anims.exists("turn")) {
+            scene.anims.create({
+                key: "turn",
+                frames: [{ key: Instances.image.key.player, frame: 4 }],
+                frameRate: 20,
+            });
+        }
     },
     bomb({ scene, x, y }) {
         const bomb = scene.physics.add.sprite(x, y, Instances.image.key.bomb).setScale(0.1);
@@ -77,14 +85,14 @@ const Objects = {
             operator,
             value,
             fontSize,
-            bg: Colors.purple,
+            bg: Colors.purple.hex,
             strokeThickness,
             width,
-            stroke: Colors.primary,
+            stroke: Colors.purple.css,
         });
     },
-    boxes(element) {
-        element.children.entries.forEach((box) => {
+    boxes(elements) {
+        elements.children.entries.forEach((box) => {
             if (box.textObj) {
                 box.textObj.x = box.x;
                 box.textObj.y = box.y;

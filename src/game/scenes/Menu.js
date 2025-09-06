@@ -1,7 +1,6 @@
 import Instances from "../consts";
 import Colors from "../consts/colors";
 import Bases from "../utils";
-import Controls from "../utils/control";
 import Helpers from "../utils/helper";
 
 class Menu extends Phaser.Scene {
@@ -24,7 +23,13 @@ class Menu extends Phaser.Scene {
             scene: this,
             y: 100,
             text: "",
-            style: { color: Colors.secondary, strokeThickness: 4, fontFamily: "Lucida Console" },
+            style: {
+                color: Colors.secondary.css,
+                stroke: Colors.primary.css,
+                strokeThickness: 4,
+                fonSize: 24,
+                fontFamily: "Lucida Console",
+            },
         });
 
         Helpers.event({
@@ -34,6 +39,8 @@ class Menu extends Phaser.Scene {
                 bg.destroy();
                 logo.destroy();
                 this.label.destroy();
+                this.scene.stop();
+                this.scene.stop(Instances.game.menu);
                 this.scene.start(Instances.game.start);
                 Helpers.playSound(this, Instances.audio.key.start);
             },

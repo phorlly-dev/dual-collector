@@ -34,6 +34,9 @@ const Helpers = {
     show({ id = "", element = null }) {
         element ? element.classList.remove("hidden") : Bases.getById(id).classList.remove("hidden");
     },
+    hidden(ids = []) {
+        ids.forEach((id) => Bases.getById(id).classList.add("hidden"));
+    },
     playSound(scene, key) {
         if (scene.sound.locked) {
             scene.sound.once(Phaser.Sound.Events.UNLOCKED, () => scene.sound.play(key));

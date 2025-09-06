@@ -11,8 +11,9 @@ const States = {
             text: "PAUSED",
             style: {
                 fontSize: 48,
-                color: Colors.white,
-                stroke: Colors.primary,
+                color: Colors.white.css,
+                stroke: Colors.primary.css,
+                strokeThickness: 8,
             },
             isVisible: false,
         });
@@ -20,8 +21,8 @@ const States = {
             scene,
             text: "Click button ▶ play to resume",
             style: {
-                color: Colors.primary,
-                stroke: Colors.success,
+                color: Colors.primary.css,
+                stroke: Colors.success.css,
                 fontSize: 24,
                 strokeThickness: 8,
             },
@@ -46,7 +47,6 @@ const States = {
         scene.isPaused = !scene.isPaused;
 
         if (scene.isPaused) {
-            // Pause the game
             scene.physics.pause();
             scene.spawnTimer.paused = true;
             scene.pauseText.setVisible(true);
@@ -56,7 +56,6 @@ const States = {
             Helpers.hide({ element: scene.pauseBtn });
             Helpers.playSound(scene, Instances.audio.key.click);
         } else {
-            // Resume the game
             scene.physics.resume();
             scene.spawnTimer.paused = false;
             scene.pauseText.setVisible(false);
@@ -73,7 +72,7 @@ const States = {
                 fontSize: "20px",
                 fill: color,
                 fontWeight: "bold",
-                stroke: Colors.white,
+                stroke: Colors.white.css,
                 strokeThickness: 2,
             })
             .setOrigin(0.5);
@@ -81,7 +80,7 @@ const States = {
         const result = scene.add
             .text(x, y - 10, resultText, {
                 fontSize: "14px",
-                fill: Colors.white,
+                fill: Colors.white.css,
                 fontWeight: "bold",
             })
             .setOrigin(0.5);
@@ -98,7 +97,7 @@ const States = {
             },
         });
     },
-    isTouchOrTablet() {
+    isTouchOrTablet(scene) {
         const ua = navigator.userAgent.toLowerCase();
 
         const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
@@ -107,7 +106,12 @@ const States = {
 
         const isSmallScreen = window.innerWidth <= 1280; // treat tablets as touch devices
 
-        return hasTouch && (isTabletUA || isSmallScreen);
+        const android = scene.sys.game.device.os.android;
+        const iOS = scene.sys.game.device.os.iOS;
+        const iPad = scene.sys.game.device.os.iPad;
+        const iPhone = scene.sys.game.device.os.iPhone;
+
+        return hasTouch && (isTabletUA || isSmallScreen) && (android || iOS || iPad || iPhone);
     },
 };
 

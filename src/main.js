@@ -1,5 +1,5 @@
 import Instances from "./game/consts";
-import StartGame from "./game/scenes/Start";
+import StartGame from "./game/init";
 import Bases from "./game/utils";
 import Helpers from "./game/utils/helper";
 

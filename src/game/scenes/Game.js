@@ -12,18 +12,17 @@ class Game extends Phaser.Scene {
         super(Instances.game.start);
     }
 
-    init() {
-        this.power = 100;
-        this.score = 0;
-        this.isPaused = false;
-    }
-
     create() {
         Helpers.show({ id: Instances.control.ui });
-        this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).setAlpha(0.4);
+        this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).setAlpha(0.2);
+
+        // Rebind DOM buttons to this new scene
+        Controls.buttons(this);
+        this.restartGame();
 
         this.player = Objects.player(this);
         Objects.animations(this);
+        States.ui(this);
 
         this.powerBoxes = this.physics.add.group();
         this.scoreBoxes = this.physics.add.group();
@@ -43,9 +42,7 @@ class Game extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.scoreBoxes, this.collectScoreBox, null, this);
         this.physics.add.overlap(this.player, this.bombBoxes, this.hitBomb, null, this);
 
-        Controls.toggleControls(States.isTouchOrTablet());
-        States.ui(this);
-        Controls.buttons(this);
+        Controls.toggleControls(States.isTouchOrTablet(this));
 
         this.walk = this.sound.add(Instances.audio.key.walk, { loop: true, volume: 0.8 });
         this.sound.play(Instances.audio.key.playing, { loop: true, volume: 0.5 });
@@ -64,14 +61,12 @@ class Game extends Phaser.Scene {
         // --- Game over check ---
         if (this.power <= 0) {
             this.time.delayedCall(800, () => {
-                Helpers.playSound(this, Instances.audio.key.end);
                 this.scene.start(Instances.game.over, {
                     score: this.score,
                     ui: Instances.control.ui,
                     control: Instances.control.card,
                 });
-
-                this.restartGame();
+                Helpers.playSound(this, Instances.audio.key.end);
             });
         }
     }
@@ -123,13 +118,11 @@ class Game extends Phaser.Scene {
         scoreBox.destroy();
     }
 
-    hitBomb(_player, bomb) {
-        // Power instantly goes to 0
-        this.power = 0;
-        Helpers.setPower(this.power);
+    hitBomb(player, _bomb) {
+        Effects.bomb(this, player);
 
-        Effects.bomb(this, bomb);
-        Helpers.playSound(this, Instances.audio.key.bomb);
+        this.power = Math.max(0, this.power - Math.floor(this.power * 0.25)); // lose 25%
+        Helpers.setPower(this.power);
     }
 
     restartGame() {
@@ -138,6 +131,10 @@ class Game extends Phaser.Scene {
         this.isPaused = false;
         Helpers.setPower(this.power);
         Helpers.setScore(this.score);
+
+        // reset UI buttons
+        Helpers.show({ element: this.pauseBtn });
+        Helpers.hide({ element: this.playBtn });
     }
 }
 

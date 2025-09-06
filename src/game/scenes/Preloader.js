@@ -33,7 +33,9 @@ class Preloader extends Phaser.Scene {
             text: "Loading: 0%",
             style: {
                 fontSize: "20px",
-                fill: Colors.secondary,
+                fill: Colors.secondary.css,
+                stroke: Colors.primary.css,
+                strokeThickness: 4,
             },
         });
 
@@ -50,7 +52,7 @@ class Preloader extends Phaser.Scene {
                 ease: "Linear",
                 onUpdate: () => {
                     progressBar.clear();
-                    progressBar.fillStyle(Colors.orange, 1);
+                    progressBar.fillStyle(Colors.orange.hex, 1);
                     progressBar.fillRoundedRect(barX, barY, barWidth * this.fakeProgress, barHeight, radius);
                     progressText.setText(`Loading: ${Math.round(this.fakeProgress * 100)}%`);
                 },
