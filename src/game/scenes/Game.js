@@ -1,6 +1,6 @@
 import Instances from "../consts";
 import spawnBoxes from "../utils/box-factory";
-import Controls from "../utils/control";
+import Controllers from "../utils/controller";
 import Effects from "../utils/effect";
 import Helpers from "../utils/helper";
 import Bases from "../utils";
@@ -17,7 +17,7 @@ class Game extends Phaser.Scene {
         this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).setAlpha(0.2);
 
         // Rebind DOM buttons to this new scene
-        Controls.buttons(this);
+        Controllers.buttons(this);
         this.restartGame();
 
         this.player = Objects.player(this);
@@ -42,18 +42,18 @@ class Game extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.scoreBoxes, this.collectScoreBox, null, this);
         this.physics.add.overlap(this.player, this.bombBoxes, this.hitBomb, null, this);
 
-        Controls.toggleControls(States.isTouchOrTablet(this));
+        Controllers.toggleControls(States.isTouchOrTablet(this));
 
         this.walk = this.sound.add(Instances.audio.key.walk, { loop: true, volume: 0.8 });
         this.sound.play(Instances.audio.key.playing, { loop: true, volume: 0.5 });
-        Controls.toggleMute(this.game.scene.keys[Instances.game.start]);
+        Controllers.toggleMute(this.game.scene.keys[Instances.game.start]);
     }
 
     update() {
         if (this.isPaused) return;
 
         // --- Player movement---
-        Controls.actions(this);
+        Controllers.actions(this);
 
         // --- Update box text positions + cleanup ---
         Helpers.textBoxes(this);
@@ -121,7 +121,7 @@ class Game extends Phaser.Scene {
     hitBomb(player, _bomb) {
         Effects.bomb(this, player);
 
-        this.power = Math.max(0, this.power - Math.floor(this.power * 0.25)); // lose 25%
+        this.power = Math.max(0, this.power - 50);
         Helpers.setPower(this.power);
     }
 

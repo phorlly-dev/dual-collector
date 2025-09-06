@@ -18,12 +18,11 @@ class Preloader extends Phaser.Scene {
         const barX = Instances.game.width / 2 - barWidth / 2;
         const barY = Instances.game.height / 2;
 
-        // progress container (outline with rounded corners)
+        // progress container
         const progressBox = this.add.graphics();
         progressBox.lineStyle(2, 0xffffff, 1);
         progressBox.strokeRoundedRect(barX, barY, barWidth, barHeight, radius);
 
-        // progress bar (filled rounded rect)
         const progressBar = this.add.graphics();
 
         // text
@@ -40,11 +39,10 @@ class Preloader extends Phaser.Scene {
         });
 
         this.fakeProgress = 0;
-        this.speed = 800;
+        this.speed = 600;
 
         // listen for loader progress
         this.load.on("progress", (progress) => {
-            // tweened smooth progress
             this.tweens.add({
                 targets: this,
                 fakeProgress: progress,
@@ -59,7 +57,14 @@ class Preloader extends Phaser.Scene {
             });
         });
 
-        // load assets here
+        // ✅ Complete event must be in preload
+        this.load.once("complete", () => {
+            this.time.delayedCall(this.speed, () => {
+                this.scene.start(Instances.game.menu);
+            });
+        });
+
+        // --- Load assets ---
         this.load.setPath("assets");
         this.load.image(Instances.image.key.logo, Instances.image.value.logo);
         this.load.image(Instances.image.key.bomb, Instances.image.value.bomb);
@@ -68,6 +73,7 @@ class Preloader extends Phaser.Scene {
             frameHeight: 48,
         });
 
+        // sounds
         this.load.audio(Instances.audio.key.power, Instances.audio.value.power);
         this.load.audio(Instances.audio.key.effect, Instances.audio.value.effect);
         this.load.audio(Instances.audio.key.cut, Instances.audio.value.cut);
@@ -77,17 +83,6 @@ class Preloader extends Phaser.Scene {
         this.load.audio(Instances.audio.key.walk, Instances.audio.value.walk);
         this.load.audio(Instances.audio.key.bomb, Instances.audio.value.bomb);
         this.load.audio(Instances.audio.key.playing, Instances.audio.value.playing);
-    }
-
-    create() {
-        // When complete → ensure progress bar finishes
-        this.load.once("complete", () => {
-            this.time.delayedCall(this.speed, () => {
-                this.scene.start(Instances.game.menu);
-            });
-        });
-
-        this.load.start();
     }
 }
 

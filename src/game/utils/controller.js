@@ -4,7 +4,7 @@ import Helpers from "./helper";
 import Objects from "./object";
 import States from "./state";
 
-const Controls = {
+const Controllers = {
     buttons(scene) {
         // clear old listeners before binding new
         const elements = [
@@ -82,4 +82,4 @@ const Controls = {
     },
 };
 
-export default Controls;
+export default Controllers;

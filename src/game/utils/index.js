@@ -111,7 +111,7 @@ const Bases = {
                 strokeThickness,
                 align: "center",
                 resolution: window.devicePixelRatio,
-                fontFamily: "Arial Black",
+                fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
             })
             .setOrigin(0.5);
 
