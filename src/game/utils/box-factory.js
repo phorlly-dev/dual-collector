@@ -6,7 +6,7 @@ const spawnBoxes = (scene) => {
 
     const y = -50;
     const strokeThickness = 12;
-    const fontSize = Math.max(12, Instances.game.width / 50);
+    const fontSize = Math.max(12, Instances.game.width / 40);
 
     // Define 3 fixed lanes
     const lanes = [150, 400, 650];

@@ -45,7 +45,7 @@ class Preloader extends Phaser.Scene {
         this.progressBar = this.add.graphics();
         this.progressText = Bases.text({
             scene: this,
-            y: y + barHeight + 40,
+            y: 50,
             text: "Loading: 0%",
             style: {
                 fontSize: "20px",
@@ -53,9 +53,7 @@ class Preloader extends Phaser.Scene {
                 stroke: Colors.primary.css,
                 strokeThickness: 4,
             },
-        })
-            .setOrigin(0.5, 0.5)
-            .setX(width / 2);
+        });
 
         // --- Smooth update per frame ---
         this.events.on("update", () => {
