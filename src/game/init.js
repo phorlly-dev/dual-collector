@@ -27,8 +27,8 @@ const config = {
         },
     },
     render: {
-        antialias: false,
-        pixelArt: true,
+        pixelArt: false, // smooth scaling
+        antialias: true, // prevent blurry text edges
     },
     scene: [Boot, Preloader, Menu, Game, GameOver],
 };
