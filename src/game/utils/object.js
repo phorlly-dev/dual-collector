@@ -2,22 +2,25 @@ import Bases from ".";
 import Instances from "../consts";
 import Colors from "../consts/colors";
 
+const { width, height } = Instances.game;
+const { player, bomb } = Instances.image.key;
+const { purple } = Colors;
 const Objects = {
     player(scene, scale = 1.8) {
-        const player = scene.physics.add
-            .sprite(Instances.game.width / 2, Instances.game.height, Instances.image.key.player)
+        const plr = scene.physics.add
+            .sprite(width / 2, height, player)
             .setBounce(0.2)
             .setScale(scale);
 
-        player.body.setCollideWorldBounds(true);
+        plr.body.setCollideWorldBounds(true);
 
-        return player;
+        return plr;
     },
     animations(scene) {
         if (!scene.anims.exists("left")) {
             scene.anims.create({
                 key: "left",
-                frames: scene.anims.generateFrameNumbers(Instances.image.key.player, { start: 0, end: 3 }),
+                frames: scene.anims.generateFrameNumbers(player, { start: 0, end: 3 }),
                 frameRate: 16,
                 repeat: -1,
             });
@@ -26,7 +29,7 @@ const Objects = {
         if (!scene.anims.exists("right")) {
             scene.anims.create({
                 key: "right",
-                frames: scene.anims.generateFrameNumbers(Instances.image.key.player, { start: 5, end: 8 }),
+                frames: scene.anims.generateFrameNumbers(player, { start: 5, end: 8 }),
                 frameRate: 16,
                 repeat: -1,
             });
@@ -35,22 +38,22 @@ const Objects = {
         if (!scene.anims.exists("turn")) {
             scene.anims.create({
                 key: "turn",
-                frames: [{ key: Instances.image.key.player, frame: 4 }],
+                frames: [{ key: player, frame: 4 }],
                 frameRate: 20,
             });
         }
     },
     bomb({ scene, x, y }) {
-        const bomb = scene.physics.add.sprite(x, y, Instances.image.key.bomb).setScale(0.1);
-        scene.bombBoxes.add(bomb);
-        bomb.x = x;
-        bomb.y = y;
+        const bom = scene.physics.add.sprite(x, y, bomb).setScale(0.1);
+        scene.bombBoxes.add(bom);
+        bom.x = x;
+        bom.y = y;
 
-        scene.physics.add.existing(bomb);
-        scene.bombBoxes.add(bomb);
-        bomb.body.setVelocityY(120);
+        scene.physics.add.existing(bom);
+        scene.bombBoxes.add(bom);
+        bom.body.setVelocityY(120);
 
-        return bomb;
+        return bom;
     },
     score({ scene, x, y, fontSize, strokeThickness }) {
         const operator = Phaser.Math.RND.pick(["+", "-"]);
@@ -85,10 +88,10 @@ const Objects = {
             operator,
             value,
             fontSize,
-            bg: Colors.purple.hex,
+            bg: purple.hex,
             strokeThickness,
             width,
-            stroke: Colors.purple.css,
+            stroke: purple.css,
         });
     },
     boxes(elements) {
@@ -98,7 +101,7 @@ const Objects = {
                 box.textObj.y = box.y;
             }
 
-            if (box.y > Instances.game.height + 50) {
+            if (box.y > height + 50) {
                 if (box.textObj) box.textObj.destroy();
                 box.destroy();
             }

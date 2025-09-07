@@ -3,6 +3,8 @@ import Instances from "../consts";
 import Colors from "../consts/colors";
 import Helpers from "./helper";
 
+const { power, cut, effect, click, start } = Instances.audio.key;
+const { white, primary, success } = Colors;
 const States = {
     ui(scene) {
         scene.pauseText = Bases.text({
@@ -11,8 +13,8 @@ const States = {
             text: "PAUSED",
             style: {
                 fontSize: 48,
-                color: Colors.white.css,
-                stroke: Colors.primary.css,
+                color: white.css,
+                stroke: primary.css,
                 strokeThickness: 8,
             },
             isVisible: false,
@@ -21,8 +23,8 @@ const States = {
             scene,
             text: "Click button ▶ play to resume",
             style: {
-                color: Colors.primary.css,
-                stroke: Colors.success.css,
+                color: primary.css,
+                stroke: success.css,
                 fontSize: 24,
                 strokeThickness: 8,
             },
@@ -32,15 +34,15 @@ const States = {
     getSoundKey(operation) {
         switch (operation) {
             case "x":
-                return Instances.audio.key.power;
+                return power;
             case "/":
-                return Instances.audio.key.cut;
+                return cut;
             case "+":
-                return Instances.audio.key.power;
+                return power;
             case "-":
-                return Instances.audio.key.cut;
+                return cut;
             default:
-                return Instances.audio.key.effect;
+                return effect;
         }
     },
     togglePause(scene) {
@@ -54,7 +56,7 @@ const States = {
 
             Helpers.show({ element: scene.playBtn });
             Helpers.hide({ element: scene.pauseBtn });
-            Helpers.playSound(scene, Instances.audio.key.click);
+            Helpers.playSound(scene, click);
         } else {
             scene.physics.resume();
             scene.spawnTimer.paused = false;
@@ -63,7 +65,7 @@ const States = {
 
             Helpers.hide({ element: scene.playBtn });
             Helpers.show({ element: scene.pauseBtn });
-            Helpers.playSound(scene, Instances.audio.key.start);
+            Helpers.playSound(scene, start);
         }
     },
     textPopup({ scene, x, y, changeText, resultText, color }) {
@@ -72,7 +74,7 @@ const States = {
                 fontSize: "20px",
                 fill: color,
                 fontWeight: "bold",
-                stroke: Colors.white.css,
+                stroke: white.css,
                 strokeThickness: 2,
             })
             .setOrigin(0.5);
@@ -80,7 +82,7 @@ const States = {
         const result = scene.add
             .text(x, y - 10, resultText, {
                 fontSize: "14px",
-                fill: Colors.white.css,
+                fill: white.css,
                 fontWeight: "bold",
             })
             .setOrigin(0.5);

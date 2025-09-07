@@ -2,19 +2,21 @@ import Instances from "../consts";
 import Colors from "../consts/colors";
 import Helpers from "./helper";
 
+const { white, black, orange } = Colors;
+const { height, width } = Instances.game;
 const Bases = {
     text({ scene, y = 0, text, style = {}, isVisible = true }) {
         const config = {
             fontFamily: "Arial",
-            fontSize: Math.max(12, Instances.game.width / 30),
-            color: Colors.white.css,
-            stroke: Colors.black.css,
+            fontSize: Math.max(12, width / 30),
+            color: white.css,
+            stroke: black.css,
             strokeThickness: 3,
             align: "center",
         };
 
         return scene.add
-            .text(Instances.game.width / 2, Instances.game.height / 2 + y, text, {
+            .text(width / 2, height / 2 + y, text, {
                 ...config,
                 ...style,
             })
@@ -22,14 +24,7 @@ const Bases = {
             .setVisible(isVisible);
     },
     flashScreen({ scene, color, alpha }) {
-        const flash = scene.add.rectangle(
-            Instances.game.width / 2,
-            Instances.game.height / 2,
-            Instances.game.width,
-            Instances.game.height,
-            color,
-            alpha
-        );
+        const flash = scene.add.rectangle(width / 2, height / 2, width, height, color, alpha);
         scene.tweens.add({
             targets: flash,
             alpha: 0,
@@ -64,7 +59,6 @@ const Bases = {
     powersOf2(value) {
         return Math.pow(2, value);
     },
-
     isMobile() {
         return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
     },
@@ -75,10 +69,10 @@ const Bases = {
         element,
         operator,
         value,
-        bg = Colors.orange.hex,
-        color = Colors.white.css,
+        bg = orange.hex,
+        color = white.css,
         fontSize = 24,
-        stroke = Colors.orange.css,
+        stroke = orange.css,
         strokeThickness = 3,
         velocityY = 120,
         radius = 16,
@@ -134,7 +128,7 @@ const Bases = {
         scene.player.setVelocityY(-330);
     },
     fallback(scene) {
-        scene.player.setVelocityY(Instances.game.height);
+        scene.player.setVelocityY(height);
     },
     stop(scene) {
         scene.player.setVelocityX(0);

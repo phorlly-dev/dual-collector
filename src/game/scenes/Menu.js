@@ -3,23 +3,20 @@ import Colors from "../consts/colors";
 import Bases from "../utils";
 import Helpers from "../utils/helper";
 
+const { width, height, menu, tapStart, pressStart, start } = Instances.game;
 class Menu extends Phaser.Scene {
     constructor() {
-        super(Instances.game.menu);
+        super(menu);
     }
 
     create() {
+        const { key } = Instances.image;
+
         // background
-        const bg = this.add
-            .image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg)
-            .setAlpha(0.8);
+        const bg = this.add.image(width / 2, height / 2, key.bg).setAlpha(0.8);
 
         // logo
-        const logo = this.add.image(
-            Instances.game.width / 2,
-            Instances.game.height / 2 - 100,
-            Instances.image.key.logo
-        );
+        const logo = this.add.image(width / 2, height / 2 - 100, key.logo);
 
         // label
         this.label = Bases.text({
@@ -50,8 +47,8 @@ class Menu extends Phaser.Scene {
                 this.label.destroy();
 
                 // stop menu and start game
-                this.scene.stop(Instances.game.menu);
-                this.scene.start(Instances.game.start);
+                this.scene.stop(menu);
+                this.scene.start(start);
 
                 // play start sound (now safe after tap)
                 Helpers.playSound(this, Instances.audio.key.start);
@@ -60,7 +57,7 @@ class Menu extends Phaser.Scene {
     }
 
     update() {
-        this.label.setText(Bases.isMobile() ? Instances.game.tapStart : Instances.game.pressStart);
+        this.label.setText(Bases.isMobile() ? tapStart : pressStart);
     }
 }
 

@@ -1,17 +1,20 @@
 import Instances from "../consts";
 
+const { boot, preload } = Instances.game;
+const { key, value } = Instances.image;
+
 class Boot extends Phaser.Scene {
     constructor() {
-        super(Instances.game.boot);
+        super(boot);
     }
 
     preload() {
         this.load.setPath("assets");
-        this.load.image(Instances.image.key.bg, Instances.image.value.bg);
+        this.load.image(key.bg, value.bg);
     }
 
     create() {
-        this.scene.start(Instances.game.preload);
+        this.scene.start(preload);
     }
 }
 

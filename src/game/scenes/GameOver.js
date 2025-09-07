@@ -3,19 +3,21 @@ import Colors from "../consts/colors";
 import Bases from "../utils";
 import Helpers from "../utils/helper";
 
+const { width, over, tapRestart, pressRestart, start } = Instances.game;
 class GameOver extends Phaser.Scene {
     constructor() {
-        super(Instances.game.over);
+        super(over);
     }
 
     create(data) {
+        const { primary, secondary, error, success } = Colors;
         if (data.ui && data.control) {
             Helpers.hidden([data.ui, data.control]);
         }
 
-        const bg = this.cameras.main.setBackgroundColor(Colors.success.css);
+        const bg = this.cameras.main.setBackgroundColor(success.css);
 
-        const fontSize = Instances.game.width / 10;
+        const fontSize = width / 10;
         const title = Bases.text({
             scene: this,
             y: -120,
@@ -23,8 +25,8 @@ class GameOver extends Phaser.Scene {
             style: {
                 fontFamily: "Arial Black",
                 fontSize: fontSize,
-                stroke: Colors.primary.css,
-                color: Colors.error.css,
+                stroke: primary.css,
+                color: error.css,
                 strokeThickness: 10,
             },
         });
@@ -33,7 +35,6 @@ class GameOver extends Phaser.Scene {
             y: -12,
             text: `Final Score: ${data.score}`,
             style: {
-                fontFamily: "Arial",
                 fontSize: fontSize / 2,
                 strokeThickness: 10,
             },
@@ -45,8 +46,8 @@ class GameOver extends Phaser.Scene {
             style: {
                 fontFamily: "Lucida Console",
                 fontSize: fontSize / 3,
-                color: Colors.primary.css,
-                stroke: Colors.secondary.css,
+                color: primary.css,
+                stroke: secondary.css,
                 strokeThickness: 8,
             },
         });
@@ -65,10 +66,10 @@ class GameOver extends Phaser.Scene {
                 this.scene.stop();
 
                 // stop and reset Game scene
-                this.scene.stop(Instances.game.start);
+                this.scene.stop(start);
 
                 // start fresh with unpaused state
-                this.scene.start(Instances.game.start);
+                this.scene.start(start);
 
                 Helpers.playSound(this, Instances.audio.key.start);
             },
@@ -76,7 +77,7 @@ class GameOver extends Phaser.Scene {
     }
 
     update() {
-        this.label.setText(Bases.isMobile() ? Instances.game.tapRestart : Instances.game.pressRestart);
+        this.label.setText(Bases.isMobile() ? tapRestart : pressRestart);
     }
 }
 

@@ -7,71 +7,116 @@ import Bases from "../utils";
 import Objects from "../utils/object";
 import States from "../utils/state";
 
+const { start, over, width, height } = Instances.game;
+const { card, ui } = Instances.control;
+const { key: audioKey } = Instances.audio;
 class Game extends Phaser.Scene {
     constructor() {
-        super(Instances.game.start);
+        super(start);
+
+        // Declare scene-level variables
+        this.player = null;
+        this.powerBoxes = null;
+        this.scoreBoxes = null;
+        this.bombBoxes = null;
+        this.cursors = null;
+        this.as = null;
+        this.spawnTimer = null;
+        this.walk = null;
+        this.pauseText = null;
+        this.pauseInstructions = null;
+
+        this.power = 100;
+        this.score = 0;
+        this.isPaused = false;
+        this.isLeft = false;
+        this.isRight = false;
+        this.isJump = false;
+
+        // Declare button refs
+        this.leftBtn = null;
+        this.rightBtn = null;
+        this.jumpBtn = null;
+        this.playBtn = null;
+        this.pauseBtn = null;
+        this.onBtn = null;
+        this.offBtn = null;
     }
 
     create() {
-        Helpers.show({ id: Instances.control.ui });
-        this.add.image(Instances.game.width / 2, Instances.game.height / 2, Instances.image.key.bg).setAlpha(0.2);
+        // --- UI & background ---
+        Helpers.show({ id: ui });
+        this.add.image(width / 2, height / 2, Instances.image.key.bg).setAlpha(0.2);
 
-        // Rebind DOM buttons to this new scene
+        // --- Rebind DOM buttons ---
         Controllers.buttons(this);
+
+        // --- Reset game state ---
         this.restartGame();
 
+        // --- Player, animations, UI ---
         this.player = Objects.player(this);
         Objects.animations(this);
         States.ui(this);
 
+        // --- Physics groups ---
         this.powerBoxes = this.physics.add.group();
         this.scoreBoxes = this.physics.add.group();
         this.bombBoxes = this.physics.add.group();
 
+        // --- Controls ---
         this.cursors = this.input.keyboard.createCursorKeys();
         this.as = this.input.keyboard.addKeys("A,S");
 
+        Controllers.toggleControls(States.isTouchOrTablet(this));
+
+        // --- Spawn boxes timer ---
         this.spawnTimer = this.time.addEvent({
             delay: 2500,
             callback: () => spawnBoxes(this),
             loop: true,
         });
 
-        // overlap detection
-        this.physics.add.overlap(this.player, this.powerBoxes, this.collectPowerBox, null, this);
-        this.physics.add.overlap(this.player, this.scoreBoxes, this.collectScoreBox, null, this);
-        this.physics.add.overlap(this.player, this.bombBoxes, this.hitBomb, null, this);
+        // --- Overlap handlers ---
+        this.registerOverlap(this.player, this.powerBoxes, this.collectPowerBox);
+        this.registerOverlap(this.player, this.scoreBoxes, this.collectScoreBox);
+        this.registerOverlap(this.player, this.bombBoxes, this.hitBomb);
 
-        Controllers.toggleControls(States.isTouchOrTablet(this));
-
-        this.walk = this.sound.add(Instances.audio.key.walk, { loop: true, volume: 0.8 });
-        this.sound.play(Instances.audio.key.playing, { loop: true, volume: 0.5 });
-        Controllers.toggleMute(this.game.scene.keys[Instances.game.start]);
+        // --- Sounds ---
+        this.walk = this.sound.add(audioKey.walk, { loop: true, volume: 0.8 });
+        this.sound.play(audioKey.playing, { loop: true, volume: 0.5 });
+        Controllers.toggleMute(this.game.scene.keys[start]);
     }
 
     update() {
         if (this.isPaused) return;
 
-        // --- Player movement---
+        // --- Player movement ---
         Controllers.actions(this);
 
         // --- Update box text positions + cleanup ---
         Helpers.textBoxes(this);
 
         // --- Game over check ---
-        if (this.power <= 0) {
+        if (this.power <= 0 && !this.isPaused) {
+            this.isPaused = true; // prevent multiple triggers
             this.time.delayedCall(800, () => {
-                this.scene.start(Instances.game.over, {
+                this.scene.start(over, {
                     score: this.score,
-                    ui: Instances.control.ui,
-                    control: Instances.control.card,
+                    ui: ui,
+                    control: card,
                 });
-                Helpers.playSound(this, Instances.audio.key.end);
+                Helpers.playSound(this, audioKey.end);
             });
         }
     }
 
-    // ... keep update, collectPowerBox, collectScoreBox (but now they call imported effects)
+    // --- Overlap helper ---
+    registerOverlap(player, group, callback) {
+        this.physics.add.overlap(player, group, callback, null, this);
+    }
+
+    // --- Collectors ---
     collectPowerBox(_player, powerBox) {
         if (powerBox.operation === "x") {
             this.power += Bases.exponentFromValue(powerBox.value) * 10;
@@ -125,16 +170,20 @@ class Game extends Phaser.Scene {
         Helpers.setPower(this.power);
     }
 
+    // --- Restart/reset state ---
     restartGame() {
         this.power = 100;
         this.score = 0;
         this.isPaused = false;
+
         Helpers.setPower(this.power);
         Helpers.setScore(this.score);
 
-        // reset UI buttons
-        Helpers.show({ element: this.pauseBtn });
-        Helpers.hide({ element: this.playBtn });
+        // Reset UI buttons if they exist
+        if (this.pauseBtn) Helpers.show({ element: this.pauseBtn });
+        if (this.playBtn) Helpers.hide({ element: this.playBtn });
+        if (this.onBtn) Helpers.show({ element: this.onBtn });
+        if (this.offBtn) Helpers.hide({ element: this.offBtn });
     }
 }
 

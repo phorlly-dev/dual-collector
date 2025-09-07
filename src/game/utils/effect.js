@@ -3,6 +3,7 @@ import Instances from "../consts";
 import Colors from "../consts/colors";
 import States from "./state";
 
+const { warning, success, error } = Colors;
 const Effects = {
     power({ scene, x, y, operation, value, oldPower }) {
         Bases.particle({ scene, x, y, options: { tint: 0x9b59b6 } });
@@ -10,7 +11,7 @@ const Effects = {
         const changeText = operation === "x" ? `Power x${value}!` : `Power ÷${value}`;
         const resultText = `${oldPower} → ${scene.power}`;
 
-        States.textPopup({ scene, x, y, changeText, resultText, color: Colors.warning.css });
+        States.textPopup({ scene, x, y, changeText, resultText, color: warning.css });
         Bases.flashScreen({ scene: scene, color: 0x9b59b6, alpha: 0.3 });
     },
     score({ scene, x, y, operation, value, oldScore }) {
@@ -19,7 +20,7 @@ const Effects = {
         const changeText = operation === "+" ? `Score +${value}!` : `Score -${value}`;
         const resultText = `${oldScore} → ${scene.score}`;
 
-        States.textPopup({ scene, x, y, changeText, resultText, color: Colors.success.css });
+        States.textPopup({ scene, x, y, changeText, resultText, color: success.css });
         Bases.flashScreen({ scene: scene, color: 0xe67e22, alpha: 0.2 });
     },
     bomb(scene, player) {
@@ -48,7 +49,7 @@ const Effects = {
             lifespan: 600,
             quantity: 20,
             scale: { start: 0.5, end: 0 },
-            tint: [Colors.error.css, Colors.warning.css, Colors.success.css],
+            tint: [error.css, warning.css, success.css],
             blendMode: "ADD",
         });
 

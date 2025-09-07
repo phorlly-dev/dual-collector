@@ -325,3 +325,61 @@ body {
         font-size: 12px;
     }
 }
+
+/* Base card */
+.card {
+    background: linear-gradient(180deg, #34495e, #2c3e50);
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.card-header {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 10px 16px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Content */
+.card-content {
+    flex: 1;
+    padding: 16px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Footer */
+.card-footer {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Optional: button style inside footer */
+.card-footer button {
+    background: #f39c12;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    margin-left: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.card-footer button:hover {
+    background: #e67e22;
+}

@@ -9,10 +9,11 @@ import Instances from "./consts";
 
 // Find out more information about the Game Config at:
 // https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
+const { width, height } = Instances.game;
 const config = {
     type: Phaser.AUTO,
-    width: Instances.game.width,
-    height: Instances.game.height,
+    width: width,
+    height: height,
     backgroundColor: "#34495e",
     scale: {
         mode: Phaser.Scale.FIT,
