@@ -1,4 +1,4 @@
-function setupModal(buttonId, modalId) {
+const setupModal = (buttonId, modalId) => {
     const btn = document.getElementById(buttonId);
     const modal = document.getElementById(modalId);
     const span = modal.querySelector(".close");
@@ -8,7 +8,7 @@ function setupModal(buttonId, modalId) {
     window.onclick = (event) => {
         if (event.target === modal) modal.style.display = "none";
     };
-}
+};
 
 setupModal("desktop-btn", "modal-desktop");
 setupModal("mobile-btn", "modal-mobile");

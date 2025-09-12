@@ -1,15 +1,14 @@
 import * as Phaser from "phaser";
-
 import Boot from "./scenes/Boot";
 import Game from "./scenes/Game";
 import GameOver from "./scenes/GameOver";
 import Menu from "./scenes/Menu";
 import Preloader from "./scenes/Preloader";
-import Instances from "./consts";
+import { height, width } from "./consts";
 
 // Find out more information about the Game Config at:
 // https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
-const { width, height } = Instances.game;
+
 const config = {
     type: Phaser.AUTO,
     width: width,

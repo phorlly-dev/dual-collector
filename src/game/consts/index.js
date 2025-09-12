@@ -8,10 +8,10 @@ const Instances = {
         start: "game-start",
         preload: "game-preload",
 
-        tapStart: "Tap the screen to begin.",
-        tapRestart: "Tap the screen to restart.",
-        pressStart: "Press SPACE or click on the screen to begin.",
-        pressRestart: "Press SPACE or click on the screen to restart.",
+        tap_start: "Tap the screen to begin.",
+        tap_restart: "Tap the screen to restart.",
+        pres_start: "Press SPACE or click on the screen to begin.",
+        press_restart: "Press SPACE or click on the screen to restart.",
     },
     control: {
         left: "left-btn",
@@ -23,8 +23,8 @@ const Instances = {
         mobile: "mobile-btn",
         on: "on-btn",
         off: "off-btn",
-        card: "controls-card",
-        ui: "ui",
+        card: "footer",
+        ui: "header",
     },
     image: {
         key: {
@@ -66,4 +66,7 @@ const Instances = {
     },
 };
 
-export default Instances;
+export const { game, control, image, audio } = Instances;
+export const { width, height, menu, over, boot, start, preload, tap_start, tap_restart, pres_start, press_restart } =
+    game;
+export const { left, right, up, play, pause, desktop, mobile, on, off, card, ui } = control;

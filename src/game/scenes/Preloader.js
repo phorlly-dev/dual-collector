@@ -1,8 +1,7 @@
-import Instances from "../consts";
-import Colors from "../consts/colors";
-import Bases from "../utils";
+import { audio, height, image, menu, preload, width } from "../consts";
+import { orange, primary, secondary } from "../consts/colors";
+import { text } from "../utils";
 
-const { width, height, preload } = Instances.game;
 class Preloader extends Phaser.Scene {
     constructor() {
         super(preload);
@@ -23,8 +22,8 @@ class Preloader extends Phaser.Scene {
     }
 
     preload() {
-        const { key: imgKey, value: imgValue } = Instances.image;
-        const { key: soundKey, value: soundValue } = Instances.audio;
+        const { key: imgKey, value: imgValue } = image;
+        const { key: soundKey, value: soundValue } = audio;
 
         // --- Background ---
         this.add.image(width / 2, height / 2, imgKey.bg).setAlpha(0.6);
@@ -43,14 +42,14 @@ class Preloader extends Phaser.Scene {
 
         // --- Progress bar + text ---
         this.progressBar = this.add.graphics();
-        this.progressText = Bases.text({
+        this.progressText = text({
             scene: this,
             y: 50,
             text: "Loading: 0%",
             style: {
                 fontSize: "20px",
-                fill: Colors.secondary.css,
-                stroke: Colors.primary.css,
+                fill: secondary.css,
+                stroke: primary.css,
                 strokeThickness: 4,
             },
         });
@@ -60,13 +59,13 @@ class Preloader extends Phaser.Scene {
             this.fakeProgress = Phaser.Math.Linear(this.fakeProgress, this.targetProgress, 0.2);
 
             this.progressBar.clear();
-            this.progressBar.fillStyle(Colors.orange.hex, 1);
+            this.progressBar.fillStyle(orange.hex, 1);
             this.progressBar.fillRoundedRect(x, y, barWidth * this.fakeProgress, barHeight, radius);
 
             this.progressText.setText(`Loading: ${Math.round(this.fakeProgress * 100)}%`);
 
             if (this.targetProgress === 1 && this.fakeProgress > 0.995) {
-                this.scene.start(Instances.game.menu);
+                this.scene.start(menu);
             }
         });
 

@@ -1,9 +1,7 @@
-import Instances from "../consts";
-import Colors from "../consts/colors";
-import Helpers from "./helper";
+import { height, width } from "../consts";
+import { black, orange, white } from "../consts/colors";
+import { playIfNotPlaying, stopIfPlaying } from "./helper";
 
-const { white, black, orange } = Colors;
-const { height, width } = Instances.game;
 const Bases = {
     text({ scene, y = 0, text, style = {}, isVisible = true }) {
         const config = {
@@ -117,12 +115,14 @@ const Bases = {
     moveLeft(scene) {
         scene.player.setVelocityX(-160);
         scene.player.anims.play("left", true);
-        Helpers.playIfNotPlaying(scene.walk);
+
+        playIfNotPlaying(scene.walk);
     },
     moveRight(scene) {
         scene.player.setVelocityX(160);
         scene.player.anims.play("right", true);
-        Helpers.playIfNotPlaying(scene.walk);
+
+        playIfNotPlaying(scene.walk);
     },
     jump(scene) {
         scene.player.setVelocityY(-330);
@@ -133,8 +133,23 @@ const Bases = {
     stop(scene) {
         scene.player.setVelocityX(0);
         scene.player.anims.play("turn");
-        Helpers.stopIfPlaying(scene.walk);
+
+        stopIfPlaying(scene.walk);
     },
 };
 
-export default Bases;
+export const {
+    text,
+    flashScreen,
+    particle,
+    getById,
+    exponentFromValue,
+    powersOf2,
+    isMobile,
+    textBox,
+    moveLeft,
+    moveRight,
+    jump,
+    fallback,
+    stop,
+} = Bases;

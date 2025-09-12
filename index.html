@@ -1,169 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/png" href="./favicon.png" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+        <title>Power & Score</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="./favicon.png" />
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <title>Power & Score</title>
-</head>
+    <body>
+        <div class="game-container card">
+            <!-- Row 1: UI -->
+            <header id="header" class="ui-row hidden card-header">
+                <section class="status">
+                    <div class="power">❤️ Power: <span id="power">100</span></div>
+                    <div></div>
+                    <div class="score">💯 Score: <span id="score">0</span></div>
+                </section>
+                <section class="actions">
+                    <button id="desktop-btn" class="control-btn guide">
+                        <i class="fa fa-desktop" aria-hidden="true"></i>
+                    </button>
+                    <button id="mobile-btn" class="control-btn guide hidden">
+                        <i class="fa fa-mobile-phone" aria-hidden="true"></i>
+                    </button>
 
-<body>
-    <div class="game-container card">
-        <!-- Row 1: UI -->
-        <div id="ui" class="ui-row hidden card-header">
-            <div class="status">
-                <div class="power">❤️ Power: <span id="power">100</span></div>
-                <div></div>
-                <div class="score">💯 Score: <span id="score">0</span></div>
-            </div>
-            <div class="actions">
-                <button id="desktop-btn" class="control-btn guide">
-                    <i class="fa fa-desktop" aria-hidden="true"></i>
-                </button>
-                <button id="mobile-btn" class="control-btn guide hidden">
-                    <i class="fa fa-mobile-phone" aria-hidden="true"></i>
-                </button>
+                    <button id="pause-btn" class="control-btn pause">
+                        <i class="fa fa-pause" aria-hidden="true"></i>
+                    </button>
+                    <button id="play-btn" class="control-btn hidden play">
+                        <i class="fa fa-play" aria-hidden="true"></i>
+                    </button>
 
-                <button id="pause-btn" class="control-btn pause">
-                    <i class="fa fa-pause" aria-hidden="true"></i>
-                </button>
-                <button id="play-btn" class="control-btn hidden play">
-                    <i class="fa fa-play" aria-hidden="true"></i>
-                </button>
+                    <button id="on-btn" class="control-btn volume">
+                        <i class="fa fa-volume-up" aria-hidden="true"></i>
+                    </button>
+                    <button id="off-btn" class="control-btn volume muted hidden">
+                        <i class="fa fa-volume-mute" aria-hidden="true"></i>
+                    </button>
+                </section>
+            </header>
 
-                <button id="on-btn" class="control-btn volume">
-                    <i class="fa fa-volume-up" aria-hidden="true"></i>
-                </button>
-                <button id="off-btn" class="control-btn volume muted hidden">
-                    <i class="fa fa-volume-mute" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>
+            <!-- Row 2: Game -->
+            <main class="phaser-wrapper card-content">
+                <section id="phaser-game"></section>
+            </main>
 
-        <!-- Row 2: Game -->
-        <div class="phaser-wrapper card-content">
-            <div id="phaser-game"></div>
-        </div>
+            <!-- Row 3: Mobile Controls -->
+            <footer id="footer" class="hidden">
+                <section class="controls-row card-footer">
+                    <button id="left-btn" class="control-btn left">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                    <button id="up-btn" class="control-btn up">
+                        <i class="fa fa-arrow-up"></i>
+                    </button>
+                    <button id="right-btn" class="control-btn right">
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </section>
+            </footer>
 
-        <!-- Row 3: Mobile Controls -->
-        <div id="controls-card" class="controls-row card-footer hidden">
-            <button id="left-btn" class="control-btn left"><i class="fa fa-arrow-left"></i></button>
-            <button id="up-btn" class="control-btn up"><i class="fa fa-arrow-up"></i></button>
-            <button id="right-btn" class="control-btn right"><i class="fa fa-arrow-right"></i></button>
-        </div>
+            <!-- Desktop Guide Modal -->
+            <div id="modal-desktop" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3 class="controls-title">▶ Desktop Controls</h3>
 
-        <!-- Desktop Guide Modal -->
-        <div id="modal-desktop" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h3 class="controls-title">▶ Desktop Controls</h3>
-
-                <div class="control-item">
-                    <div class="control-icon">⇌</div>
-                    <div class="control-text">
-                        <div class="control-key">← / → or A / D</div>
-                        <div class="control-desc">Move your player left / right</div>
+                    <div class="control-item">
+                        <div class="control-icon">⇌</div>
+                        <div class="control-text">
+                            <div class="control-key">← / → or A / D</div>
+                            <div class="control-desc">Move your player left / right</div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="control-item">
-                    <div class="control-icon">␣</div>
-                    <div class="control-text">
-                        <div class="control-key">SPACE</div>
-                        <div class="control-desc">Jump</div>
+                    <div class="control-item">
+                        <div class="control-icon">␣</div>
+                        <div class="control-text">
+                            <div class="control-key">SPACE</div>
+                            <div class="control-desc">Jump</div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="control-item purple">
-                    <div class="control-icon">⬜</div>
-                    <div class="control-text">
-                        <div class="control-key">Purple Boxes</div>
-                        <div class="control-desc">Multiply or Divide Power (x / ÷)</div>
+                    <div class="control-item purple">
+                        <div class="control-icon">⬜</div>
+                        <div class="control-text">
+                            <div class="control-key">Purple Boxes</div>
+                            <div class="control-desc">Multiply or Divide Power (x / ÷)</div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="control-item orange">
-                    <div class="control-icon">⬛</div>
-                    <div class="control-text">
-                        <div class="control-key">Orange Boxes</div>
-                        <div class="control-desc">Add or Subtract Score (+ / –)</div>
+                    <div class="control-item orange">
+                        <div class="control-icon">⬛</div>
+                        <div class="control-text">
+                            <div class="control-key">Orange Boxes</div>
+                            <div class="control-desc">Add or Subtract Score (+ / –)</div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="game-info">
-                    <div class="game-info-text">🏆 Keep Power above 0 & maximize your Score!</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Guide Modal -->
-        <div id="modal-mobile" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h3 class="controls-title">📱 Mobile Controls</h3>
-
-                <div class="control-item">
-                    <div class="control-icon">⬅ ➡</div>
-                    <div class="control-text">
-                        <div class="control-key">Tap Left / Right Buttons</div>
-                        <div class="control-desc">Move your player</div>
+                    <div class="game-info">
+                        <div class="game-info-text">🏆 Keep Power above 0 & maximize your Score!</div>
                     </div>
-                </div>
-
-                <div class="control-item">
-                    <div class="control-icon">⬆</div>
-                    <div class="control-text">
-                        <div class="control-key">Tap Up Button</div>
-                        <div class="control-desc">Jump</div>
-                    </div>
-                </div>
-
-                <div class="control-item purple">
-                    <div class="control-icon">⬜</div>
-                    <div class="control-text">
-                        <div class="control-key">Purple Boxes</div>
-                        <div class="control-desc">Multiply or Divide Power (x / ÷)</div>
-                    </div>
-                </div>
-
-                <div class="control-item orange">
-                    <div class="control-icon">⬛</div>
-                    <div class="control-text">
-                        <div class="control-key">Orange Boxes</div>
-                        <div class="control-desc">Add or Subtract Score (+ / –)</div>
-                    </div>
-                </div>
-
-                <h4 class="touch-title">👆 Mobile Tips</h4>
-                <div class="touch-item">
-                    <div class="touch-icon">👆</div>
-                    <div class="control-text">
-                        <div class="control-key">Tap</div>
-                        <div class="control-desc">Quick small movements</div>
-                    </div>
-                </div>
-                <div class="touch-item">
-                    <div class="touch-icon">👇</div>
-                    <div class="control-text">
-                        <div class="control-key">Hold</div>
-                        <div class="control-desc">Continuous movement</div>
-                    </div>
-                </div>
-
-                <div class="game-info">
-                    <div class="game-info-text">🏆 Keep Power above 0 & maximize your Score!</div>
                 </div>
             </div>
-        </div>
-    </div>
-    <script type="module" src="./src/main.js"></script>
-    <script type="module" src="/controls.js"></script>
-</body>
 
+            <!-- Mobile Guide Modal -->
+            <div id="modal-mobile" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3 class="controls-title">📱 Mobile Controls</h3>
+
+                    <div class="control-item">
+                        <div class="control-icon">⬅ ➡</div>
+                        <div class="control-text">
+                            <div class="control-key">Tap Left / Right Buttons</div>
+                            <div class="control-desc">Move your player</div>
+                        </div>
+                    </div>
+
+                    <div class="control-item">
+                        <div class="control-icon">⬆</div>
+                        <div class="control-text">
+                            <div class="control-key">Tap Up Button</div>
+                            <div class="control-desc">Jump</div>
+                        </div>
+                    </div>
+
+                    <div class="control-item purple">
+                        <div class="control-icon">⬜</div>
+                        <div class="control-text">
+                            <div class="control-key">Purple Boxes</div>
+                            <div class="control-desc">Multiply or Divide Power (x / ÷)</div>
+                        </div>
+                    </div>
+
+                    <div class="control-item orange">
+                        <div class="control-icon">⬛</div>
+                        <div class="control-text">
+                            <div class="control-key">Orange Boxes</div>
+                            <div class="control-desc">Add or Subtract Score (+ / –)</div>
+                        </div>
+                    </div>
+
+                    <h4 class="touch-title">👆 Mobile Tips</h4>
+                    <div class="touch-item">
+                        <div class="touch-icon">👆</div>
+                        <div class="control-text">
+                            <div class="control-key">Tap</div>
+                            <div class="control-desc">Quick small movements</div>
+                        </div>
+                    </div>
+                    <div class="touch-item">
+                        <div class="touch-icon">👇</div>
+                        <div class="control-text">
+                            <div class="control-key">Hold</div>
+                            <div class="control-desc">Continuous movement</div>
+                        </div>
+                    </div>
+
+                    <div class="game-info">
+                        <div class="game-info-text">🏆 Keep Power above 0 & maximize your Score!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/controls.js"></script>
+        <script type="module" src="./src/main.js"></script>
+    </body>
 </html>

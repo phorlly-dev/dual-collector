@@ -11,4 +11,5 @@ const Colors = {
     success: { hex: 0xe67e22, css: "#e67e22" },
     error: { hex: 0xf44336, css: "#f44336" },
 };
-export default Colors;
+
+export const { white, black, orange, purple, primary, secondary, warning, success, error } = Colors;

@@ -1,14 +1,11 @@
-import Bases from ".";
-import Instances from "../consts";
-import Colors from "../consts/colors";
+import { powersOf2, textBox } from ".";
+import { height, image, width } from "../consts";
+import { purple } from "../consts/colors";
 
-const { width, height } = Instances.game;
-const { player, bomb } = Instances.image.key;
-const { purple } = Colors;
 const Objects = {
     player(scene, scale = 1.8) {
         const plr = scene.physics.add
-            .sprite(width / 2, height, player)
+            .sprite(width / 2, height, image.key.player)
             .setBounce(0.2)
             .setScale(scale);
 
@@ -20,7 +17,7 @@ const Objects = {
         if (!scene.anims.exists("left")) {
             scene.anims.create({
                 key: "left",
-                frames: scene.anims.generateFrameNumbers(player, { start: 0, end: 3 }),
+                frames: scene.anims.generateFrameNumbers(image.key.player, { start: 0, end: 3 }),
                 frameRate: 16,
                 repeat: -1,
             });
@@ -29,7 +26,7 @@ const Objects = {
         if (!scene.anims.exists("right")) {
             scene.anims.create({
                 key: "right",
-                frames: scene.anims.generateFrameNumbers(player, { start: 5, end: 8 }),
+                frames: scene.anims.generateFrameNumbers(image.key.player, { start: 5, end: 8 }),
                 frameRate: 16,
                 repeat: -1,
             });
@@ -38,13 +35,13 @@ const Objects = {
         if (!scene.anims.exists("turn")) {
             scene.anims.create({
                 key: "turn",
-                frames: [{ key: player, frame: 4 }],
+                frames: [{ key: image.key.player, frame: 4 }],
                 frameRate: 20,
             });
         }
     },
     bomb({ scene, x, y }) {
-        const bom = scene.physics.add.sprite(x, y, bomb).setScale(0.1);
+        const bom = scene.physics.add.sprite(x, y, image.key.bomb).setScale(0.1);
         scene.bombBoxes.add(bom);
         bom.x = x;
         bom.y = y;
@@ -59,7 +56,7 @@ const Objects = {
         const operator = Phaser.Math.RND.pick(["+", "-"]);
         const value = operator === "+" ? Phaser.Math.Between(50, 500) : Phaser.Math.Between(25, 250);
 
-        Bases.textBox({
+        textBox({
             scene,
             x,
             y,
@@ -71,16 +68,16 @@ const Objects = {
         });
     },
     power({ scene, x, y, fontSize, strokeThickness }) {
-        let { value, width } = 60;
+        let { value, widthBox } = 60;
         const operator = Phaser.Math.RND.pick(["x", "/"]);
         if (operator === "x") {
-            value = Bases.powersOf2(Phaser.Math.Between(1, 11));
-            width = 70;
+            value = powersOf2(Phaser.Math.Between(1, 11));
+            widthBox = 70;
         } else {
             value = Phaser.Math.Between(2, 4);
         }
 
-        Bases.textBox({
+        textBox({
             scene,
             x,
             y,
@@ -90,7 +87,7 @@ const Objects = {
             fontSize,
             bg: purple.hex,
             strokeThickness,
-            width,
+            width: widthBox,
             stroke: purple.css,
         });
     },
@@ -120,4 +117,4 @@ const Objects = {
     },
 };
 
-export default Objects;
+export const { player, animations, bomb, score, power, boxes, bindButtons, bindToggleButtons } = Objects;

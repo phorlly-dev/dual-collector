@@ -1,13 +1,11 @@
-import Bases from ".";
-import Instances from "../consts";
-import Colors from "../consts/colors";
-import Helpers from "./helper";
+import { text } from ".";
+import { audio } from "../consts";
+import { primary, success, white } from "../consts/colors";
+import { hide, playSound, show } from "./helper";
 
-const { power, cut, effect, click, start } = Instances.audio.key;
-const { white, primary, success } = Colors;
 const States = {
     ui(scene) {
-        scene.pauseText = Bases.text({
+        scene.pauseText = text({
             scene,
             y: -80,
             text: "PAUSED",
@@ -19,7 +17,7 @@ const States = {
             },
             isVisible: false,
         });
-        scene.pauseInstructions = Bases.text({
+        scene.pauseInstructions = text({
             scene,
             text: "Click button ▶ play to resume",
             style: {
@@ -34,15 +32,15 @@ const States = {
     getSoundKey(operation) {
         switch (operation) {
             case "x":
-                return power;
+                return audio.key.power;
             case "/":
-                return cut;
+                return audio.key.cut;
             case "+":
-                return power;
+                return audio.key.power;
             case "-":
-                return cut;
+                return audio.key.cut;
             default:
-                return effect;
+                return audio.key.effect;
         }
     },
     togglePause(scene) {
@@ -54,18 +52,18 @@ const States = {
             scene.pauseText.setVisible(true);
             scene.pauseInstructions.setVisible(true);
 
-            Helpers.show({ element: scene.playBtn });
-            Helpers.hide({ element: scene.pauseBtn });
-            Helpers.playSound(scene, click);
+            show({ element: scene.playBtn });
+            hide({ element: scene.pauseBtn });
+            playSound(scene, audio.key.click);
         } else {
             scene.physics.resume();
             scene.spawnTimer.paused = false;
             scene.pauseText.setVisible(false);
             scene.pauseInstructions.setVisible(false);
 
-            Helpers.hide({ element: scene.playBtn });
-            Helpers.show({ element: scene.pauseBtn });
-            Helpers.playSound(scene, start);
+            hide({ element: scene.playBtn });
+            show({ element: scene.pauseBtn });
+            playSound(scene, audio.key.start);
         }
     },
     textPopup({ scene, x, y, changeText, resultText, color }) {
@@ -117,4 +115,4 @@ const States = {
     },
 };
 
-export default States;
+export const { ui: textPause, getSoundKey, togglePause, textPopup, isTouchOrTablet } = States;

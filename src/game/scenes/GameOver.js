@@ -1,24 +1,22 @@
-import Instances from "../consts";
-import Colors from "../consts/colors";
-import Bases from "../utils";
-import Helpers from "../utils/helper";
+import { audio, over, press_restart, start, tap_restart, width } from "../consts";
+import { error, primary, secondary, success } from "../consts/colors";
+import { isMobile, text } from "../utils";
+import { event, hidden } from "../utils/helper";
 
-const { width, over, tapRestart, pressRestart, start } = Instances.game;
 class GameOver extends Phaser.Scene {
     constructor() {
         super(over);
     }
 
     create(data) {
-        const { primary, secondary, error, success } = Colors;
         if (data.ui && data.control) {
-            Helpers.hidden([data.ui, data.control]);
+            hidden([data.ui, data.control]);
         }
 
         const bg = this.cameras.main.setBackgroundColor(success.css);
 
         const fontSize = width / 10;
-        const title = Bases.text({
+        const title = text({
             scene: this,
             y: -120,
             text: "GAME OVER!",
@@ -30,7 +28,7 @@ class GameOver extends Phaser.Scene {
                 strokeThickness: 10,
             },
         });
-        const score = Bases.text({
+        const score = text({
             scene: this,
             y: -12,
             text: `Final Score: ${data.score}`,
@@ -39,7 +37,7 @@ class GameOver extends Phaser.Scene {
                 strokeThickness: 10,
             },
         });
-        this.label = Bases.text({
+        this.label = text({
             scene: this,
             y: 100,
             text: "",
@@ -52,7 +50,7 @@ class GameOver extends Phaser.Scene {
             },
         });
 
-        Helpers.event({
+        event({
             scene: this,
             keys: ["keydown-SPACE", "pointerdown"],
             callback: () => {
@@ -71,13 +69,13 @@ class GameOver extends Phaser.Scene {
                 // start fresh with unpaused state
                 this.scene.start(start);
 
-                Helpers.playSound(this, Instances.audio.key.start);
+                playSound(this, audio.key.start);
             },
         });
     }
 
     update() {
-        this.label.setText(Bases.isMobile() ? tapRestart : pressRestart);
+        this.label.setText(isMobile() ? tap_restart : press_restart);
     }
 }
 

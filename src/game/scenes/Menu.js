@@ -1,16 +1,15 @@
-import Instances from "../consts";
-import Colors from "../consts/colors";
-import Bases from "../utils";
-import Helpers from "../utils/helper";
+import { audio, height, image, menu, pres_start, start, tap_start, width } from "../consts";
+import { primary, secondary } from "../consts/colors";
+import { isMobile, text } from "../utils";
+import { event, playSound } from "../utils/helper";
 
-const { width, height, menu, tapStart, pressStart, start } = Instances.game;
 class Menu extends Phaser.Scene {
     constructor() {
         super(menu);
     }
 
     create() {
-        const { key } = Instances.image;
+        const { key } = image;
 
         // background
         const bg = this.add.image(width / 2, height / 2, key.bg).setAlpha(0.8);
@@ -19,13 +18,13 @@ class Menu extends Phaser.Scene {
         const logo = this.add.image(width / 2, height / 2 - 100, key.logo);
 
         // label
-        this.label = Bases.text({
+        this.label = text({
             scene: this,
             y: 100,
             text: "",
             style: {
-                color: Colors.secondary.css,
-                stroke: Colors.primary.css,
+                color: secondary.css,
+                stroke: primary.css,
                 strokeThickness: 4,
                 fontSize: "24px", // ✅ fixed typo
                 fontFamily: "Lucida Console",
@@ -33,7 +32,7 @@ class Menu extends Phaser.Scene {
         });
 
         // unlock audio + start game on first input
-        Helpers.event({
+        event({
             scene: this,
             keys: ["keydown-SPACE", "pointerdown"],
             callback: () => {
@@ -51,13 +50,13 @@ class Menu extends Phaser.Scene {
                 this.scene.start(start);
 
                 // play start sound (now safe after tap)
-                Helpers.playSound(this, Instances.audio.key.start);
+                playSound(this, audio.key.start);
             },
         });
     }
 
     update() {
-        this.label.setText(Bases.isMobile() ? tapStart : pressStart);
+        this.label.setText(isMobile() ? tap_start : pres_start);
     }
 }
 

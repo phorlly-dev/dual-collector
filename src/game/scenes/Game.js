@@ -1,15 +1,12 @@
-import Instances from "../consts";
+import { audio, height, image, start, ui, width } from "../consts";
+import { exponentFromValue } from "../utils";
 import spawnBoxes from "../utils/box-factory";
-import Controllers from "../utils/controller";
-import Effects from "../utils/effect";
-import Helpers from "../utils/helper";
-import Bases from "../utils";
-import Objects from "../utils/object";
-import States from "../utils/state";
+import { actions, buttons, toggleControls, toggleMute } from "../utils/controller";
+import { bomb, power, score } from "../utils/effect";
+import { hide, playSound, setPower, setScore, show, textBoxes } from "../utils/helper";
+import { animations, player } from "../utils/object";
+import { getSoundKey, isTouchOrTablet, textPause } from "../utils/state";
 
-const { start, over, width, height } = Instances.game;
-const { card, ui } = Instances.control;
-const { key: audioKey } = Instances.audio;
 class Game extends Phaser.Scene {
     constructor() {
         super(start);
@@ -45,19 +42,20 @@ class Game extends Phaser.Scene {
 
     create() {
         // --- UI & background ---
-        Helpers.show({ id: ui });
-        this.add.image(width / 2, height / 2, Instances.image.key.bg).setAlpha(0.2);
+        show({ id: ui });
+        this.add.image(width / 2, height / 2, image.key.bg).setAlpha(0.2);
 
         // --- Rebind DOM buttons ---
-        Controllers.buttons(this);
+        buttons(this);
 
         // --- Reset game state ---
         this.restartGame();
 
         // --- Player, animations, UI ---
-        this.player = Objects.player(this);
-        Objects.animations(this);
-        States.ui(this);
+        this.player = player(this);
+
+        animations(this);
+        textPause(this);
 
         // --- Physics groups ---
         this.powerBoxes = this.physics.add.group();
@@ -68,7 +66,7 @@ class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.as = this.input.keyboard.addKeys("A,S");
 
-        Controllers.toggleControls(States.isTouchOrTablet(this));
+        toggleControls(isTouchOrTablet(this));
 
         // --- Spawn boxes timer ---
         this.spawnTimer = this.time.addEvent({
@@ -83,19 +81,22 @@ class Game extends Phaser.Scene {
         this.registerOverlap(this.player, this.bombBoxes, this.hitBomb);
 
         // --- Sounds ---
-        this.walk = this.sound.add(audioKey.walk, { loop: true, volume: 0.8 });
-        this.sound.play(audioKey.playing, { loop: true, volume: 0.5 });
-        Controllers.toggleMute(this.game.scene.keys[start]);
+        this.walk = this.sound.add(audio.key.walk, { loop: true, volume: 0.8 });
+        this.sound.play(audio.key.playing, { loop: true, volume: 0.5 });
+
+        toggleMute(this.game.scene.keys[start]);
     }
 
     update() {
         if (this.isPaused) return;
 
         // --- Player movement ---
-        Controllers.actions(this);
+
+        actions(this);
 
         // --- Update box text positions + cleanup ---
-        Helpers.textBoxes(this);
+
+        textBoxes(this);
 
         // --- Game over check ---
         if (this.power <= 0 && !this.isPaused) {
@@ -106,7 +107,8 @@ class Game extends Phaser.Scene {
                     ui: ui,
                     control: card,
                 });
-                Helpers.playSound(this, audioKey.end);
+
+                playSound(this, audio.key.end);
             });
         }
     }
@@ -119,12 +121,12 @@ class Game extends Phaser.Scene {
     // --- Collectors ---
     collectPowerBox(_player, powerBox) {
         if (powerBox.operation === "x") {
-            this.power += Bases.exponentFromValue(powerBox.value) * 10;
+            this.power += exponentFromValue(powerBox.value) * 10;
         } else if (powerBox.operation === "/") {
             this.power = Math.floor(this.power / powerBox.value);
         }
 
-        Effects.power({
+        power({
             scene: this,
             x: powerBox.x,
             y: powerBox.y,
@@ -133,8 +135,9 @@ class Game extends Phaser.Scene {
             oldPower: this.power,
         });
 
-        Helpers.setPower(this.power);
-        Helpers.playSound(this, States.getSoundKey(powerBox.operation));
+        setPower(this.power);
+
+        playSound(this, getSoundKey(powerBox.operation));
 
         if (powerBox.textObj) powerBox.textObj.destroy();
         powerBox.destroy();
@@ -147,7 +150,7 @@ class Game extends Phaser.Scene {
             this.score = Math.max(0, this.score - scoreBox.value);
         }
 
-        Effects.score({
+        score({
             scene: this,
             x: scoreBox.x,
             y: scoreBox.y,
@@ -156,18 +159,20 @@ class Game extends Phaser.Scene {
             oldScore: this.score,
         });
 
-        Helpers.setScore(this.score);
-        Helpers.playSound(this, States.getSoundKey(scoreBox.operation));
+        setScore(this.score);
+
+        playSound(this, getSoundKey(scoreBox.operation));
 
         if (scoreBox.textObj) scoreBox.textObj.destroy();
         scoreBox.destroy();
     }
 
     hitBomb(player, _bomb) {
-        Effects.bomb(this, player);
+        bomb(this, player);
 
         this.power = Math.max(0, this.power - 50);
-        Helpers.setPower(this.power);
+
+        setPower(this.power);
     }
 
     // --- Restart/reset state ---
@@ -176,14 +181,15 @@ class Game extends Phaser.Scene {
         this.score = 0;
         this.isPaused = false;
 
-        Helpers.setPower(this.power);
-        Helpers.setScore(this.score);
+        setPower(this.power);
+
+        setScore(this.score);
 
         // Reset UI buttons if they exist
-        if (this.pauseBtn) Helpers.show({ element: this.pauseBtn });
-        if (this.playBtn) Helpers.hide({ element: this.playBtn });
-        if (this.onBtn) Helpers.show({ element: this.onBtn });
-        if (this.offBtn) Helpers.hide({ element: this.offBtn });
+        if (this.pauseBtn) show({ element: this.pauseBtn });
+        if (this.playBtn) hide({ element: this.playBtn });
+        if (this.onBtn) show({ element: this.onBtn });
+        if (this.offBtn) hide({ element: this.offBtn });
     }
 }
 

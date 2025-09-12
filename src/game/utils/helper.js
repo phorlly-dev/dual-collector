@@ -1,17 +1,17 @@
-import Bases from ".";
-import Objects from "./object";
+import { getById } from ".";
+import { boxes } from "./object";
 
 const Helpers = {
     textBoxes(scene) {
-        Objects.boxes(scene.powerBoxes);
-        Objects.boxes(scene.scoreBoxes);
-        Objects.boxes(scene.bombBoxes);
+        boxes(scene.powerBoxes);
+        boxes(scene.scoreBoxes);
+        boxes(scene.bombBoxes);
     },
     setPower(power) {
-        Bases.getById("power").textContent = power;
+        getById("power").textContent = power;
     },
     setScore(score) {
-        Bases.getById("score").textContent = score;
+        getById("score").textContent = score;
     },
     event({ scene, keys, callback, once = true }) {
         // allow both array or string with "|"
@@ -29,13 +29,13 @@ const Helpers = {
         });
     },
     hide({ id = "", element = null }) {
-        element ? element.classList.add("hidden") : Bases.getById(id).classList.add("hidden");
+        element ? element.classList.add("hidden") : getById(id).classList.add("hidden");
     },
     show({ id = "", element = null }) {
-        element ? element.classList.remove("hidden") : Bases.getById(id).classList.remove("hidden");
+        element ? element.classList.remove("hidden") : getById(id).classList.remove("hidden");
     },
     hidden(ids = []) {
-        ids.forEach((id) => Bases.getById(id).classList.add("hidden"));
+        ids.forEach((id) => getById(id).classList.add("hidden"));
     },
     playSound(scene, key) {
         if (scene.sound.locked) {
@@ -56,4 +56,5 @@ const Helpers = {
     },
 };
 
-export default Helpers;
+export const { textBoxes, setPower, setScore, event, hide, show, hidden, playSound, playIfNotPlaying, stopIfPlaying } =
+    Helpers;

@@ -1,7 +1,4 @@
-import Instances from "../consts";
-
-const { boot, preload } = Instances.game;
-const { key, value } = Instances.image;
+import { boot, image, preload } from "../consts";
 
 class Boot extends Phaser.Scene {
     constructor() {
@@ -10,7 +7,7 @@ class Boot extends Phaser.Scene {
 
     preload() {
         this.load.setPath("assets");
-        this.load.image(key.bg, value.bg);
+        this.load.image(image.key.bg, image.value.bg);
     }
 
     create() {
